@@ -18,8 +18,7 @@ After the installation is complete, you can launch dev server by running.
 
 ```js
 yarn dev || npm run dev
-```
-
+``
 
 # employe-system
 # employe-system
