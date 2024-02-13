@@ -20,7 +20,9 @@ const baseUrl = REACT_APP_BASE_URL1;
 
 
 export const StateContextProvider = ({ children }) => {
-  const socket = socketIO.connect(baseUrl);
+  const socket = socketIO.connect(baseUrl, {
+    transports: [ "websocket" ] 
+  });
 
 
 
