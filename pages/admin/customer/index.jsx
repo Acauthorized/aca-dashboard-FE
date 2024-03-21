@@ -271,7 +271,7 @@ export default function CustomerList({}) {
     }
 
     
-  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket ,allcustomers]);
+  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket ]);
 
   const tableHeading = [
     {
@@ -531,7 +531,7 @@ export default function CustomerList({}) {
       //   });
       // }
     });
-  }, [socket ]);
+  }, [socket]);
 
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
