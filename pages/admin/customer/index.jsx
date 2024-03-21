@@ -433,22 +433,24 @@ export default function CustomerList({}) {
       });
 
       // search notification only show form admin
-      socket.on("search_cust", (data) => {
-        //toast.info("some agent search for customer");
+      // socket.on("search_cust", (data) => {
+      //   //toast.info("some agent search for customer");
 
-        if (userRole[0] === "admin") {
-          toast.info("HI ADMIN some agent search for customer");
-          dispatch(
-            FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
-          );
-        } else if (userRole[0] === "staff") {
-          toast.info("HI AGENT some agent search for customer");
-          dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
-        }
+      //   if (userRole[0] === "admin") {
+      //     toast.info("HI ADMIN some agent search for customer");
+      //     dispatch(
+      //       FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+      //     );
+      //   } else if (userRole[0] === "staff") {
+      //     toast.info("HI AGENT some agent search for customer");
+      //     dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
+      //   }
 
-        dispatch(FetchNotifications());
-      });
+      //   dispatch(FetchNotifications());
+      // });
     }
+
+
 
     socket.on("search_server", (data) => {
       toast.success(data.message);
