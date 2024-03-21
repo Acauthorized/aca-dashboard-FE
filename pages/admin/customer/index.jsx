@@ -502,12 +502,12 @@ export default function CustomerList({}) {
 
 
       if (userRole[0] === "admin") {
-        toast.info("HI ADMIN some agent search for customer");
+     //   toast.info("HI ADMIN some agent search for customer");
         dispatch(
           FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
         );
       } else if (userRole[0] === "staff") {
-        toast.info("HI AGENT some agent search for customer");
+       // toast.info("HI AGENT some agent search for customer");
         dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
 
@@ -521,7 +521,7 @@ export default function CustomerList({}) {
       // }, 5000);
 
 
-      
+
       // if (data?.receiver === userData?.id) {
       //   console.log("reciever", data.receiver, "currentUser", userData?.id);
       //   console.log("Customer Status changed📌📌📌📌📌📌📌📌📌📌", data);
