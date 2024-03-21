@@ -468,6 +468,9 @@ export default function CustomerList({}) {
       }
 
       dispatch(FetchNotifications());
+      setTimeout(function () {
+        window.location.reload();
+      }, 5000);
     });
 
     //create_cust-execute
