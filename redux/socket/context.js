@@ -19,7 +19,7 @@ export const StateContextProvider = ({ children }) => {
     pro,
  
 {
-    
+  path: "/socket.io",
     rememberUpgrade: true,
     autoConnect: true,
     reconnection: true,
