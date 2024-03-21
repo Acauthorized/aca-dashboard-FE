@@ -19,7 +19,7 @@ export const StateContextProvider = ({ children }) => {
     pro,
     { path: "/socket.io", transports: ["websocket"] },
     {
-      reconnection: true,
+      reconnection: false,
     }
   );
 
