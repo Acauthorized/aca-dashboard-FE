@@ -271,7 +271,7 @@ export default function CustomerList({}) {
     }
 
     
-  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket]);
+  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket ,allcustomers]);
 
   const tableHeading = [
     {
