@@ -17,9 +17,7 @@ const dev = "http://localhost:3300";
 export const StateContextProvider = ({ children }) => {
   const socket = io(
     pro,
-  //   {
-  //     transports: ['websocket']
-  //  }
+ 
      { path: "/socket.io", transports: ["websocket"] },
     {
       reconnection: false,
