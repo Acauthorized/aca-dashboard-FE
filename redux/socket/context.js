@@ -19,6 +19,7 @@ export const StateContextProvider = ({ children }) => {
     pro,
  
 {
+  transports: ['websocket' ]
   // path: "/socket.io",
   //   rememberUpgrade: true,
   //   autoConnect: true,
