@@ -266,9 +266,12 @@ export default function CustomerList({}) {
       );
     } else if (userRole[0] === "staff") {
       dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
-      //toast.success("staff fetch customers");
+
+      //toast.success("Refetch customers again");
     }
-  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size]);
+
+    
+  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket]);
 
   const tableHeading = [
     {

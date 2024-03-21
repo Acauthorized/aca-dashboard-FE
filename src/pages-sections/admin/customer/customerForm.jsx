@@ -12,6 +12,7 @@ import {
   RadioGroup,
   FormHelperText,
 } from "@mui/material";
+import { makeStyles } from '@mui/styles';
 import { Paragraph ,H2 ,H3 ,H1 } from "components/Typography";
 import { Formik, Field, ErrorMessage, useFormik } from "formik";
 import DropZone from "components/DropZone";
@@ -54,8 +55,27 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 // `;
 
 // ================================================================
+// region styles
+const useStyles = makeStyles((theme) => ({
+  customTextField: {
+    "& input::placeholder": {
+      fontSize: "20px" ,
 
+     
+    },
+
+    // "& .MuiInputLabel-root": {
+    //   fontSize: "20px",
+    //   transform: "none",
+    // },
+  }
+
+}));
 // ================================================================
+
+
+
+
 
 const CustomerForm = (props) => {
   const {
@@ -79,6 +99,8 @@ const CustomerForm = (props) => {
     userimage,
     setUserImage
   } = props;
+
+  const classes = useStyles();
   const [files, setFiles] = useState([]);
 
   const [imagepreview, setImagepreview] = useState({});
@@ -381,6 +403,7 @@ console.log("****************",userimage)
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <TextField
+                classes={{ root: classes.customTextField }}
                   fullWidth
                   name="firstName"
                   label={fetchWord("firstname", locale)}
@@ -397,6 +420,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="lastName"
                   label={fetchWord("lastname", locale)}
@@ -414,6 +438,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="email"
                   label={fetchWord("email", locale)}
@@ -430,6 +455,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="address"
                   label={fetchWord("adress", locale)}
@@ -447,6 +473,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="phoneNumber"
                   label={fetchWord("phone", locale)}
@@ -463,6 +490,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="city"
                   label={fetchWord("city", locale)}
@@ -479,6 +507,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="zip"
                   label={fetchWord("zipcode", locale)}
@@ -495,6 +524,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="birthday"
                   label={fetchWord("birthday", locale)}
@@ -528,6 +558,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="work"
                   label={fetchWord("work", locale)}
@@ -544,6 +575,7 @@ console.log("****************",userimage)
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="date"
                   label={fetchWord("date", locale)}
@@ -561,6 +593,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="time"
                   label={fetchWord("time", locale)}
@@ -578,6 +611,7 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
+                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="ssn"
                   label="ssn"
