@@ -237,7 +237,7 @@ export default function CustomerList({}) {
     setNote("");
     setNote("");
 
-    socket.sockets.emit("status-customer", status);
+    socket.emit("status-customer", status);
   };
 
   const [custpage, setcustPage] = useState(0);
@@ -515,7 +515,7 @@ export default function CustomerList({}) {
 
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
-    socket.sockets.emit("search", data);
+    socket.emit("search", data);
   };
 
   return (
