@@ -398,11 +398,11 @@ export default function CustomerList({}) {
   useEffect(() => {
     // console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
 
-    // socket.on("connect_error", (err) => {
-    //   // the reason of the error, for example "xhr poll error"
-    //   console.log(err.message);
-    //   toast.info(`message ${err.message}`);
-    // });
+    socket.on("connect_error", (err) => {
+      // the reason of the error, for example "xhr poll error"
+      console.log(err.message);
+      toast.info(`message ${err.message}`);
+    });
 
     socket.on("start", (data) => {
       console.log("socket start in server--->", data);

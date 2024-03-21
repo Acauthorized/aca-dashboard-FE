@@ -21,9 +21,9 @@ export const StateContextProvider = ({ children }) => {
   //     transports: ['websocket']
   //  }
      { path: "/socket.io", transports: ["websocket"] },
-    // {
-    //   reconnection: false,
-    // }
+    {
+      reconnection: false,
+    }
 
   );
 
