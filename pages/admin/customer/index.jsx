@@ -431,7 +431,7 @@ export default function CustomerList({}) {
 
       // search notification only show form admin
       socket.on("search_cust", (data) => {
-        toast.info("some agent search for customer");
+        //toast.info("some agent search for customer");
 
         if (userRole[0] === "admin") {
           toast.info("HI ADMIN some agent search for customer");
@@ -468,7 +468,7 @@ export default function CustomerList({}) {
     //create_cust-execute
 
     socket.on("create_cust-execute", (data) => {
-      toast.success(data.message);
+      //toast.success(data.message);
 
       //toast.info("some agent search for customer");
 
