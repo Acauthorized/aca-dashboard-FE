@@ -24,8 +24,8 @@ export const StateContextProvider = ({ children }) => {
     autoConnect: true,
     reconnection: true,
     reconnectionAttempts: Infinity,
-   // reconnectionDelay: 1000,
-    //reconnectionDelayMax: 2000,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 1000,
     randomizationFactor: 0.5,
     timeout: 3000,
   transports: ['websocket' ,"polling"]
