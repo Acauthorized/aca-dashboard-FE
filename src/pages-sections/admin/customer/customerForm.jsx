@@ -9,8 +9,10 @@ import {
   MenuItem,
   Stack,
   Radio,
+  RadioGroup,
+  FormHelperText,
 } from "@mui/material";
-import { Paragraph } from "components/Typography";
+import { Paragraph ,H2 ,H3 ,H1 } from "components/Typography";
 import { Formik, Field, ErrorMessage, useFormik } from "formik";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box";
@@ -72,34 +74,53 @@ const CustomerForm = (props) => {
     setSignature,
     agreement,
     setAgreement,
+    file,
+    setFile,
+    userimage,
+    setUserImage
   } = props;
   const [files, setFiles] = useState([]);
 
   const [imagepreview, setImagepreview] = useState({});
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
-  const handleChangeDropZone = async (files) => {
-    // files.forEach((file) =>
-    //   Object.assign(file, {
-    //     preview: URL.createObjectURL(file),
-    //   })
-    // );
-    // setFiles(files);
+  const handleChangeDropZone = async (e ,type) => {
 
-    console.log(files[0]);
+    let file = e.target.files[0]
+    const formData = new FormData();
+    formData.append("image", file);
 
-    Object.assign(files[0], {
-      preview: URL.createObjectURL(files[0]),
-    });
+   const res = await UploadImage(formData)
+console.log("res image-->" , res)
+   
 
-    setImagepreview(files[0]);
+if(type === 'userimage'){
 
-    // const formData = new FormData();
-    // formData.append("image", files[0]);
+    setUserImage(res)
+    toast.success('User image uploaded successfully')
+}
 
-    //await UploadImage(formData)
+
+else {
+  setFile(res)
+  toast.success('Document uploaded successfully')
+
+}
+
+
+
+
+
+
+   // setFile(res)
+   
+
+
   };
 
+
+
+console.log("****************",userimage)
   console.log("inFORMIK", initialValues);
   //single image Upload
   const imageUpload = async (e) => {
@@ -224,15 +245,15 @@ const CustomerForm = (props) => {
       
       <Stack spacing={3} mb={3}>
         <div>
-          <h1>
-            <Paragraph fontWeight={600}>
+          
+            <H1 fontWeight={600}>
               {fetchWord("agreeTitle", locale)}
-            </Paragraph>
-          </h1>
+            </H1>
+         
           <h3>
-            <Paragraph sx={{ my: "10px" }} fontWeight={600}>
+            <H3 sx={{ my: "10px" }} fontWeight={600}>
               {fetchWord("agreeSub", locale)}
-            </Paragraph>
+            </H3>
           </h3>
 
           <ol type="1">
@@ -302,7 +323,7 @@ const CustomerForm = (props) => {
             }}
             value={agreement}
             onChange={handleAgreementChange}
-            label={<Paragraph fontWeight={600}>False</Paragraph>}
+            label={<H3 fontWeight={600}>False</H3>}
             control={
               <Radio checked={agreement === false} color="info" size="small" />
             }
@@ -315,7 +336,7 @@ const CustomerForm = (props) => {
             }}
             value={agreement}
             onChange={handleAgreementChange}
-            label={<Paragraph fontWeight={600}>True</Paragraph>}
+            label={<H3 fontWeight={600}>True</H3>}
             control={
               <Radio checked={agreement === true} color="info" size="small" />
             }
@@ -389,6 +410,7 @@ const CustomerForm = (props) => {
                   helperText={touched.lastName && errors.lastName}
                 />
               </Grid>
+              
 
               <Grid item xs={12} md={6}>
                 <TextField
@@ -570,8 +592,8 @@ const CustomerForm = (props) => {
                 />
               </Grid>
 
-              <Grid item sm={6} xs={12}>
-                <TextField
+              <Grid item xs={12}>
+                {/* <TextField
                   select
                   fullWidth
                   color="info"
@@ -591,7 +613,28 @@ const CustomerForm = (props) => {
                   <MenuItem color="info" value={"female"}>
                     {fetchWord("female", locale)}
                   </MenuItem>
-                </TextField>
+                </TextField> */}
+
+<div>
+          {/* <h3>Agreament </h3> */}
+          <Grid item xs={12} >
+                <FormControl  color="info" fullWidth>
+                  <FormLabel>{fetchWord("gender", locale)}</FormLabel>
+                  <RadioGroup  color="info" row name="gender" onChange={handleChange} value={values.gender}>
+                    <FormControlLabel  color="info" value="Male" control={<Radio />} label=  {fetchWord("male", locale)} />
+                    <FormControlLabel  color="info" value="Female" control={<Radio />}  label = {fetchWord("female", locale)} />
+                    {/* <FormControlLabel  color="info" value="Other" control={<Radio />} label="Other" /> */}
+                  </RadioGroup>
+                  <FormHelperText style={{  }}>{touched.gender && errors.gender}</FormHelperText>
+                </FormControl>
+                
+              </Grid>
+        </div>
+
+
+
+
+
               </Grid>
 
               {signature && (
@@ -644,7 +687,117 @@ const CustomerForm = (props) => {
                 // flexDirection="row" mt={2} flexWrap="wrap" gap={1}
                 >
                   {showImagesUpload && (
-                    <Box mb="5">
+
+<Box>
+
+{/* ---------UserImage Upload------ */}
+<Box mb="17" mt="17">
+                      <FormControl>
+                        <FormLabel htmlFor="userUpload" fontWeight={"bold"}>
+                          {fetchWord("userImage", locale)}
+                          <Box as="span" color="red.500">
+                            *
+                          </Box>
+                        </FormLabel>
+                        <FormLabel
+                          border="2px dashed lightgrey"
+                          h="110px"
+                          w="100%"
+                          textAlign={"center"}
+                          onChange={(e) => handleChangeDropZone(e,'userimage')
+                           // setUserImage(e.target.files[0])
+                          
+                          }
+                          htmlFor="userUpload"
+                        >
+                          <Text mt="8" color="gray">
+                            {fetchWord("uploaduser" ,locale)}
+                          </Text>
+
+                          <Field
+                            as={Input}
+                            type="file"
+                            name="url"
+                            accept={["application/*, image/*"]}
+                            display="none"
+                            id="userUpload"
+                          
+                          />
+                        </FormLabel>
+                      </FormControl>
+                      <ErrorMessage
+                        name={"url"}
+                        render={(msg) => (
+                          <Box
+                            fontSize={"sm"}
+                            color={"red.500"}
+                            mt={1}
+                            textAlign={"left"}
+                          >
+                            {msg}
+                          </Box>
+                        )}
+                      />
+                    </Box>
+
+
+
+
+{/* ---------Document------- */}
+<Box mb="17" mt="17">
+                      <FormControl>
+                        <FormLabel htmlFor="docUpload" fontWeight={"bold"}>
+                          {fetchWord("documentImage", locale)}
+                          <Box as="span" color="red.500">
+                            *
+                          </Box>
+                        </FormLabel>
+                        <FormLabel
+                          border="2px dashed lightgrey"
+                          h="110px"
+                          w="100%"
+                          textAlign={"center"}
+                          onChange={(e) => handleChangeDropZone(e,'doc')
+                           // setUserImage(e.target.files[0])
+                          
+                          }
+                          htmlFor="docUpload"
+                        >
+                          <Text mt="8" color="gray">
+                            {fetchWord("uploaddoc", locale)}
+                          </Text>
+
+                          <Field
+                            as={Input}
+                            type="file"
+                            name="doc"
+                            accept={["application/*, image/*"]}
+                            display="none"
+                            id="docUpload"
+                          
+                          />
+                        </FormLabel>
+                      </FormControl>
+                      <ErrorMessage
+                        name={"doc"}
+                        render={(msg) => (
+                          <Box
+                            fontSize={"sm"}
+                            color={"red.500"}
+                            mt={1}
+                            textAlign={"left"}
+                          >
+                            {msg}
+                          </Box>
+                        )}
+                      />
+                    </Box>
+
+
+
+
+{/* ------MultiImages------ */}
+                    <Box mb="17" mt="17">
                       <FormControl>
                         <FormLabel htmlFor="imageUpload" fontWeight={"bold"}>
                           {fetchWord("images", locale)}
@@ -689,6 +842,11 @@ const CustomerForm = (props) => {
                         )}
                       />
                     </Box>
+
+
+                    </Box>
+
+
                   )}
                 </div>
 
@@ -764,6 +922,13 @@ const CustomerForm = (props) => {
                     {/* {audiofile && <audio controls src={audiofile} />} */}
                   </div>
                 )}
+
+
+                <div style={{marginTop:'12px'}}>
+                  <Paragraph fontWeight={"600"} color="red"  mt='17' mb='17'>
+                  I {values?.firstName} authorize Rodney Sydnor to be my broker of record for years 2024 to 2028 with the healthcare marketplace.
+                  </Paragraph>
+                </div>
               </Grid>
 
               {/* show images in edit page only--- */}
@@ -791,6 +956,10 @@ const CustomerForm = (props) => {
                 </div>
               </Grid>
 
+
+{/* ------user and document images show in edit--- */}
+
+
               {/* show audio file--- */}
 
               <div style={{ marginTop: "13px" }}>
@@ -802,6 +971,46 @@ const CustomerForm = (props) => {
                   controls={true}
                 />
               </div>
+
+
+              <Grid item xs={12}>
+              {isedit && <div style={{ display: "flex", gap: "12px" ,marginTop:'10px' }}>
+
+{userimage?.link &&
+<div>
+
+
+<Paragraph>{fetchWord("userImage" ,locale)}</Paragraph>
+
+<img 
+  style={{
+    objectFit: "cover",
+    height: "50px",
+    width: "50px",
+  }}
+src={userimage?.link} alt="" />
+</div>
+}
+
+{file?.link &&
+<div>
+<Paragraph>{fetchWord("documentImage" ,locale)}</Paragraph>
+
+
+  <img 
+  style={{
+    objectFit: "cover",
+    height: "50px",
+    width: "50px",
+  }}
+src={file?.link} alt="" />
+</div>
+}
+</div>
+}
+</Grid>
+
+
 
               {buttonCondition && (
                 <Grid item xs={12}>

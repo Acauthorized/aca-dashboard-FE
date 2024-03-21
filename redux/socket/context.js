@@ -1,31 +1,44 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useEffect, useState, useContext, useRef } from "react";
 
 import { toast } from "react-toastify";
 
-import socketIO from "socket.io-client";
+//import socketIO from "socket.io-client";
+import { io } from "socket.io-client";
+
+import { APIURL } from "../baseURL";
+const baseUrl = APIURL;
 
 const StateContext = createContext();
 
-
-
-const REACT_APP_BASE_URL1 = "https://dolphin-app-lu45l.ondigitalocean.app/";
-// const REACT_APP_BASE_URL1 = "https://clownfish-app-tzjmm.ondigitalocean.app";
-// const REACT_APP_BASE_URL = "http://localhost:8000";
-
-const baseUrl = REACT_APP_BASE_URL1;
-  // process.env.NODE_ENV === "development"
-  //   ? REACT_APP_BASE_URL
-  //   : REACT_APP_BASE_URL1;
-
-
+const pro = //"https://jellyfish-app-as8az.ondigitalocean.app";
+"https://dolphin-app-lu45l.ondigitalocean.app";
+const dev = "http://localhost:3300";
 
 export const StateContextProvider = ({ children }) => {
-  const socket = socketIO.connect(baseUrl, {
-    transports: [ "websocket" ] 
-  });
+  const socket = io(
+    pro,
+    { path: "/socket.io", transports: ["websocket"] },
+    {
+      reconnection: false,
+    }
+  );
 
+  // const socket = io(pro, {
+  //   path: '/socket.io/',
+  // //  transports: ["websocket"] ,
 
+  //    transports: ["websocket", "polling"],
+  //    rejectUnauthorized: false,
+  //    allowRequest: (req, callback) => {
+  //     callback(null, false);
+  //   }
+  //    //secure: true,
+  //    //handshake: false,
+  //   //   allowEIO3: true
 
+  // }
+
+  // );
 
   return (
     <StateContext.Provider value={{ socket }}>{children}</StateContext.Provider>

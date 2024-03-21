@@ -10,26 +10,22 @@ import {
 import { toast } from "react-toastify";
 import { changeLanguage } from "i18next";
 
-const REACT_APP_BASE_URL1 = "https://dolphin-app-lu45l.ondigitalocean.app";
-// const REACT_APP_BASE_URL1 = "https://clownfish-app-tzjmm.ondigitalocean.app";
+import { APIURL } from "./baseURL";
+const baseUrl = APIURL;
+const REACT_APP_BASE_URL1 = "https://clownfish-app-tzjmm.ondigitalocean.app";
 const REACT_APP_BASE_URL = "http://localhost:8000";
-const baseUrl = REACT_APP_BASE_URL1
-  // process.env.NODE_ENV === "development"
-  //   ? REACT_APP_BASE_URL
-  //   : REACT_APP_BASE_URL1;
+//const baseUrl = REACT_APP_BASE_URL1
+// process.env.NODE_ENV === "development"
+//   ? REACT_APP_BASE_URL
+//   : REACT_APP_BASE_URL1;
 
 export const FetchCustomers =
-  (page = 1, size = 2, status, sortBy, sortDirection ,employeid) =>
+  (page = 1, size = 2, status, sortBy, sortDirection, employeid) =>
   async (dispatch) => {
     await dispatch(fetchStart());
     try {
       console.log("page in request api 📱 📱 📱", employeid);
-      console.log(
-        "QUERIES!!!!!!!!!!!!!!!!!!!!!!!!!",
-        status,
-        sortBy,
-        sortDirection
-      );
+      console.log("QUERIES ADMIN", status, sortBy, sortDirection);
 
       const response = await axiosJWT.get(
         `${baseUrl}/customers?page=${
@@ -50,7 +46,7 @@ export const FetchAgentCustomers =
     await dispatch(fetchStart());
     try {
       console.log("page in@@@@@@@@@@@@@@@@@ request api", page);
-      console.log("QUERIES!!!!!!!!!!!!!!!!!!!!!!!!!", sortBy, sortDirection);
+      console.log("QUERIES AGENT APIIIIII", sortBy, sortDirection);
 
       const response = await axiosJWT.get(
         `${baseUrl}/customers/agentCustomers?page=${
@@ -75,7 +71,7 @@ export const AddCustomer = (data, agentId, router) => async (dispatch) => {
 
     toast.success("new customer created");
     console.log("RESPONSE DATA", response.data);
-
+    //ExecuteSocket(response.data.notification)
     return dispatch(FetchCustomers());
   } catch (err) {
     toast.error(err?.message);
@@ -88,9 +84,7 @@ export const getSingleCustomerRedux = (customerId) => async (dispatch) => {
   try {
     console.log("page in request api", page);
 
-    const response = await axiosJWT.get(
-      `${baseUrl}/customers/${id}`
-    );
+    const response = await axiosJWT.get(`${baseUrl}/customers/${id}`);
     console.log("all customers api fetch REFETCH", response.data);
     return response.data;
     //
@@ -125,55 +119,55 @@ export const UpdateCustomer = async (values, id, router) => {
   }
 };
 
-export const DeleteCustomer = (customerId, files ,audio) => async (dispatch) => {
-  try {
-    //console.log("image filename" ,filename)
+export const DeleteCustomer =
+  (customerId, files, audio,  file , userimage) => async (dispatch) => {
+    try {
+      //console.log("image filename" ,filename)
 
-    files.forEach(async (file) => {
-      console.log("single fieeeeee", file.filename);
+      if(files && files?.length > 0)
+      files.forEach(async (file) => {
+        console.log("single fieeeeee", file.filename);
+        await DeleteImage(file?.filename);
+      });
+
+
+      if (file?.filename){
       await DeleteImage(file?.filename);
-    });
+      }
 
+if (userimage?.filename){
+      await DeleteImage(userimage?.filename);
+}
+      // delete audio file
 
-    // delete audio file 
+      if (audio) {
+        const audioName = audio.split("audio/")[1];
 
-    if (audio) {
-    const audioName = audio.split('audio/')[1]
+        console.log(audioName, "");
 
-    console.log(audioName ,"AAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        await DeleteImage(audioName, "audio");
+        //  toast.success("Audio deleted success")
+      }
 
+      const response = await axiosJWT.delete(
+        `${baseUrl}/customers/${customerId}`
+      );
 
-    
+      toast.success("Customer deleted successfully");
+      // console.log("RESPONSE DATA", response.data);
 
-
-    await DeleteImage(audioName ,'audio')
-  //  toast.success("Audio deleted success")
+      return dispatch(FetchCustomers());
+    } catch (err) {
+      toast.error(err?.message);
+      return dispatch(fetchFailed(err));
     }
-
-
-
-
-
-
-    const response = await axiosJWT.delete(
-      `${baseUrl}/customers/${customerId}`
-    );
-
-    toast.success("Customer deleted successfully");
-   // console.log("RESPONSE DATA", response.data);
-
-    return dispatch(FetchCustomers());
-  } catch (err) {
-    toast.error(err?.message);
-    return dispatch(fetchFailed(err));
-  }
-};
+  };
 
 // chnage customer status by admin
 //http://localhost:8000/customers/status/659d1a5bd115075f79ac1022
 
 export const ChangeCustomerStatus =
-  (customerdata, status, note ,process) => async (dispatch) => {
+  (customerdata, status, note, process) => async (dispatch) => {
     try {
       //console.log("image filename" ,filename)
 
@@ -188,7 +182,7 @@ export const ChangeCustomerStatus =
         status: status,
         note: note,
         agentId: customerdata?.employe_id,
-        process:process
+        process: process,
       };
 
       //await DeleteImage(filename)
@@ -256,12 +250,12 @@ export const UploadAudio = async (files, oldfile = null) => {
   }
 };
 
-export const DeleteImage = async (filename ,folder) => {
+export const DeleteImage = async (filename, folder) => {
   try {
     console.log("in DELETEEE", filename);
     const res = await axiosJWT.post(`${baseUrl}/upload/deleteimage`, {
       filename: filename,
-      folder:folder
+      folder: folder,
     });
 
     console.log("single", res?.data);
@@ -273,33 +267,39 @@ export const DeleteImage = async (filename ,folder) => {
   }
 };
 
-
-
-
 //Search Customer --> http://localhost:8000/customers/find/anemous?searchtype=name
 
+export const CustomerSerch =
+  (value, type, ExecuteSocket ,status ,date) => async (dispatch) => {
+    try {
+      //await DeleteImage(filename)
 
-export const CustomerSerch = (value, type) => async (dispatch) => {
-  try {
-    //await DeleteImage(filename)
+      if(!value){
 
-    const response = await axiosJWT.get(
-      `${baseUrl}/customers/find/${value}?searchtype=${type}`
-    );
+        toast.error("You should type something to search")
 
-    console.log("RESPONSE DATA", response.data?.message);
+return
+      }
 
-    if (response?.data?.message === false) {
-      toast.success("Customer not founded ");
-      return dispatch(FetchCustomers());
-    } else if (response?.data?.message === true) {
-      toast.success("Customer already exist");
+      const response = await axiosJWT.get(
+        `${baseUrl}/customers/find/${value}?searchtype=${type}&&status=${status}&&date=${date}`
+      );
+      
+
+
+
+
+      console.log("RESPONSE DATA", response.data?.message);
+
+      if (response?.data?.message === false) {
+        toast.success("Customer not founded ");
+        ExecuteSocket(response.data.notification);
+        return dispatch(FetchCustomers());
+      } else if (response?.data?.message === true) {
+        toast.success("Customer already exist");
+      }
+    } catch (err) {
+      toast.error(err?.message);
+      return dispatch(fetchFailed(err));
     }
-  } catch (err) {
-    toast.error(err?.message);
-    return dispatch(fetchFailed(err));
-  }
-};
-
-
-
+  };

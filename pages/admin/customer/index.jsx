@@ -27,7 +27,7 @@ import { CustomersRow } from "pages-sections/admin";
 import { AgentRow } from "pages-sections/admin";
 import useMuiTable from "hooks/useMuiTable";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CustomerPagination from "./pagination";
 import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
@@ -111,7 +111,9 @@ CustomerList.getLayout = function getLayout(page) {
 
 // =============================================================================
 
-export default function CustomerList({ }) {
+// ---------------------------------------------------
+
+export default function CustomerList({}) {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
 
   const downSM = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -165,6 +167,14 @@ export default function CustomerList({ }) {
       setSortBy("email");
       setSortDirection("desc");
     }
+  };
+
+  const [searchExiststatus, setSearchExistStatus] = useState("");
+  const [searcDate, setSearchDate] = useState("");
+
+  const handleSearchExistStatusChange = (event) => {
+    setSearchExistStatus(event.target.value);
+    console.log("name", event.target.value);
   };
 
   const handleSearchStatusChange = (event) => {
@@ -226,6 +236,8 @@ export default function CustomerList({ }) {
 
     setNote("");
     setNote("");
+
+    socket.emit("status-customer", status);
   };
 
   const [custpage, setcustPage] = useState(0);
@@ -258,8 +270,6 @@ export default function CustomerList({ }) {
     }
   }, [custpage, refresh, searchstatus, sortBy, sortDirection, size]);
 
-
-
   const tableHeading = [
     {
       id: "_id",
@@ -277,63 +287,65 @@ export default function CustomerList({ }) {
       align: "center",
     },
     {
-id:"note",
-label:"Note",
-align:'center'
-
+      id: "note",
+      label: "Note",
+      align: "center",
     },
-  
+
     {
       id: "status",
       label: "Status",
       align: "center",
     },
-  
-   userRole[0] !== 'admin' ? {
-      id: "phoneNumber",
-      label: "PhoneNumber",
+
+    userRole[0] !== "admin"
+      ? {
+          id: "phoneNumber",
+          label: "PhoneNumber",
+          align: "center",
+        }
+      : {
+          id: "searchedBy",
+          label: "SearchedBy",
+          align: "center",
+        },
+
+    {
+      id: "process",
+      label: "Process",
       align: "center",
-    }
-  
-   : {
-      id: "searchedBy",
-      label: "SearchedBy",
+    },
+
+    userRole[0] === "admin"
+      ? {
+          id: "employe_id",
+          label: "AgentName",
+          align: "center",
+        }
+      : {
+          id: "firstName",
+          label: "FirstName",
+          align: "center",
+        },
+
+    {
+      id: "userimage",
+      label: "picture",
       align: "center",
     },
 
     {
-
-id:"process",
-label:"Process",
-align:'center'
-
+      id: "file",
+      label: "Document",
+      align: "center",
     },
 
-     
-    userRole[0] === 'admin' ?
-   {
-    id: "employe_id",
-    label: "AgentName",
-    align: "center",
-  } 
-  :
-   {
-      id: "firstName",
-      label: "FirstName",
-      align: "center",
-    }
-
-  ,
     {
       id: "action",
       label: "Action",
       align: "center",
     },
   ];
-
-
-
-
 
   const filteredCustomers = allcustomers?.map((item) => ({
     id: item._id,
@@ -349,7 +361,8 @@ align:'center'
     audio: item?.audio,
     employe_id: item?.employe_id,
     note: item?.note,
-    process:item?.process
+    process: item?.process,
+    userimage: item?.userimage,
   }));
 
   console.log("filterdcystomers", filteredCustomers);
@@ -379,13 +392,33 @@ align:'center'
     setcustPage(value);
   };
 
- 
-
   useEffect(() => {
     console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
-    socket.on("fetch", (data) => {
-     
+
+    socket.on("connect_error", (err) => {
+      // the reason of the error, for example "xhr poll error"
+      console.log(err.message);
+      toast.info(`message ${err.message}`);
     });
+
+    socket.on("start", (data) => {
+      console.log("socket start in server--->", data);
+      toast.info(data);
+    });
+
+    socket.on("order", (data) => {
+      toast.info(data);
+    });
+
+    socket.on("search", (data) => {
+      console.log("socket start in server--->", data);
+      toast.info(data);
+    });
+
+    // socket.on("order", (data) => {
+    //   console.log("order--->" ,data)
+    //   toast.info(data);
+    // });
 
     if (userRole[0] === "admin") {
       socket.on("createcustomer", (data) => {
@@ -397,46 +430,85 @@ align:'center'
       });
 
       // search notification only show form admin
-      socket.on("search_customer", (data) => {
+      socket.on("search_cust", (data) => {
         toast.info("some agent search for customer");
-        
-    if (userRole[0] === "admin") {
-        dispatch(FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection));
-         }
 
-         else if  (userRole[0] === "staff") {
+        if (userRole[0] === "admin") {
+          toast.info("HI ADMIN some agent search for customer");
+          dispatch(
+            FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+          );
+        } else if (userRole[0] === "staff") {
+          toast.info("HI AGENT some agent search for customer");
           dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
-
-         }
-
-
+        }
 
         dispatch(FetchNotifications());
       });
     }
 
-    socket.on("status", (data) => {
-   
+    socket.on("search_server", (data) => {
+      toast.success(data.message);
 
-  
+      //toast.info("some agent search for customer");
 
-      if (data?.receiver === userData?.id) {
-     
-        toast.info("customer status changed");
-         dispatch(FetchNotifications()).then(()=>{
-          window.location.reload();
-        })
-        
-     
-
-
- 
-
-      
-
+      if (userRole[0] === "admin") {
+        toast.info("HI ADMIN some agent search for customer");
+        dispatch(
+          FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+        );
+      } else if (userRole[0] === "staff") {
+        toast.info("HI AGENT some agent search for customer");
+        dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
+
+      dispatch(FetchNotifications());
     });
-  }, []);
+
+    //create_cust-execute
+
+    socket.on("create_cust-execute", (data) => {
+      toast.success(data.message);
+
+      //toast.info("some agent search for customer");
+
+      if (userRole[0] === "admin") {
+        toast.info("HI ADMIN some agent added for customer");
+        dispatch(
+          FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+        );
+      }
+
+      dispatch(FetchNotifications());
+    });
+
+    socket.on("status", (data) => {
+      console.log("DATAAAAAAA SOCKETIO STATUS CHANGED 🖥️ 📱🖥️ 📱", data);
+
+      console.log(
+        `status 📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌${data.status}`
+      );
+      toast.info(`customer status changed to ${data.status}`);
+
+      setTimeout(function () {
+        window.location.reload();
+      }, 5000);
+
+      // if (data?.receiver === userData?.id) {
+      //   console.log("reciever", data.receiver, "currentUser", userData?.id);
+      //   console.log("Customer Status changed📌📌📌📌📌📌📌📌📌📌", data);
+      //   toast.info("customer status changed");
+      //   dispatch(FetchNotifications()).then(() => {
+      //     window.location.reload();
+      //   });
+      // }
+    });
+  }, [socket]);
+
+  const ExecuteSocket = (data) => {
+    console.log("HHIUHHIAHSH", data);
+    socket.emit("search", data);
+  };
 
   return (
     <Box py={4}>
@@ -444,20 +516,93 @@ align:'center'
 
       <Card
         backgroundColor="grey.900"
-        sx={{ height: "160px", marginBottom: "20px", padding: "14px" }}
+        sx={{ height: "auto", marginBottom: "20px", padding: "14px" }}
       >
-        <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            gap: "8px",
+            display: "flex",
+          }}
+        >
           <SearchInput
-            sx={{ flexGrow: 1 }}
+            label={"search by name or ssn"}
+            // sx={{ flexGrow: 1 }}
             onChange={(e) => setSearchValue(e.target.value)}
           />
+
+          <Box>
+            <SearchInput
+              label={"search by birth date"}
+              // sx={{ flexGrow: 1 }}
+              onChange={(e) => setSearchDate(e.target.value)}
+            />
+          </Box>
+
+          {/* --------Status customer exist search---- */}
+          <Box
+            width={"100px"}
+            mr={"12px"}
+            ml={"12px"}
+            p={"0px"}
+            item
+            xs={12}
+            lg={4}
+          >
+            <FormControl fullWidth size="small">
+              <InputLabel color="info" id="demo-simple-select-label">
+                Status
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                color="info"
+                value={searchExiststatus}
+                label="FilterBy"
+                onChange={handleSearchExistStatusChange}
+              >
+                {/* <MenuItem color="info" value="all">
+                    All
+                  </MenuItem> */}
+
+                <MenuItem
+                  color="info"
+                  value="accepted"
+                  sx={{ alignItems: "center" }}
+                >
+                  Accepted
+                </MenuItem>
+                <MenuItem color="info" value="pending">
+                  Pending
+                </MenuItem>
+
+                <MenuItem color="info" value="rejected">
+                  Rejected
+                </MenuItem>
+
+                {/* <MenuItem color="info" value="admincustomers">
+                    admin customer
+                  </MenuItem> */}
+              </Select>
+            </FormControl>
+          </Box>
 
           <Button
             color="info"
             fullWidth={downSM}
             variant="contained"
             // startIcon={<Add />}
-            onClick={() => dispatch(CustomerSerch(searchValue, searchType))}
+            onClick={() =>
+              dispatch(
+                CustomerSerch(
+                  searchValue,
+                  searchType,
+                  ExecuteSocket,
+                  searchExiststatus,
+                  searcDate
+                )
+              )
+            }
             sx={
               {
                 // minHeight: 44,
@@ -660,8 +805,6 @@ align:'center'
                   rowCount={filteredList.length}
                   onRequestSort={handleRequestSort}
                 />
-
-              
 
                 {filteredCustomers && (
                   <TableBody>
