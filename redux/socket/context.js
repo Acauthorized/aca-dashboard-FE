@@ -17,11 +17,14 @@ const dev = "http://localhost:3300";
 export const StateContextProvider = ({ children }) => {
   const socket = io(
     pro,
-    { path: "/socket.io", transports: ["websocket"] },
-    {
-      reconnection: false,
-    }
+    // { path: "/socket.io", transports: ["websocket"] },
+    // {
+    //   reconnection: false,
+    // }
+
   );
+
+
 
   // const socket = io(pro, {
   //   path: '/socket.io/',
