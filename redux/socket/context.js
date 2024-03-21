@@ -19,15 +19,15 @@ export const StateContextProvider = ({ children }) => {
     pro,
  
 {
-  path: "/socket.io",
-    rememberUpgrade: true,
-    autoConnect: true,
-    reconnection: true,
-    reconnectionAttempts: Infinity,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 1000,
-    randomizationFactor: 0.5,
-    timeout: 3000,
+  // path: "/socket.io",
+  //   rememberUpgrade: true,
+  //   autoConnect: true,
+  //   reconnection: true,
+  //   reconnectionAttempts: Infinity,
+  //   reconnectionDelay: 1000,
+  //   reconnectionDelayMax: 1000,
+  //   randomizationFactor: 0.5,
+  //   timeout: 3000,
   transports: ['websocket' ,"polling"]
 }
     //  { path: "/socket.io", transports: ["websocket"] },
