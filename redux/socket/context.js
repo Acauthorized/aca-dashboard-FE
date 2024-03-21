@@ -18,10 +18,17 @@ export const StateContextProvider = ({ children }) => {
   const socket = io(
     pro,
  
-     { path: "/socket.io", transports: ["websocket"] },
-    {
-      reconnection: false,
-    }
+{
+    reconnectionAttempts: 3,
+  transports: ['websocket']
+}
+    //  { path: "/socket.io", transports: ["websocket"] },
+    // {
+    //   reconnection: false,
+    // }
+
+
+
 
   );
 
