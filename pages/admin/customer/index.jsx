@@ -468,9 +468,11 @@ export default function CustomerList({}) {
       }
 
       dispatch(FetchNotifications());
-      setTimeout(function () {
-        window.location.reload();
-      }, 5000);
+      // setTimeout(function () {
+      //   window.location.reload();
+      // }, 5000);
+
+
     });
 
     //create_cust-execute
@@ -498,10 +500,28 @@ export default function CustomerList({}) {
       );
       toast.info(`customer status changed to ${data.status}`);
 
-      setTimeout(function () {
-        window.location.reload();
-      }, 5000);
 
+      if (userRole[0] === "admin") {
+        toast.info("HI ADMIN some agent search for customer");
+        dispatch(
+          FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+        );
+      } else if (userRole[0] === "staff") {
+        toast.info("HI AGENT some agent search for customer");
+        dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
+      }
+
+      dispatch(FetchNotifications());
+
+
+
+
+      // setTimeout(function () {
+      //   window.location.reload();
+      // }, 5000);
+
+
+      
       // if (data?.receiver === userData?.id) {
       //   console.log("reciever", data.receiver, "currentUser", userData?.id);
       //   console.log("Customer Status changed📌📌📌📌📌📌📌📌📌📌", data);
