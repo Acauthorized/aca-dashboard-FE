@@ -28,7 +28,7 @@ export const StateContextProvider = ({ children }) => {
   //   reconnectionDelayMax: 1000,
   //   randomizationFactor: 0.5,
   //   timeout: 3000,
-  transports: ['websocket' ,"polling"]
+  //transports: ['websocket' ,"polling"]
 }
     //  { path: "/socket.io", transports: ["websocket"] },
     // {
