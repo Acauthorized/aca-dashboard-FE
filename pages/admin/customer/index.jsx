@@ -531,7 +531,7 @@ export default function CustomerList({}) {
       //   });
       // }
     });
-  }, [socket]);
+  }, [socket , allcustomers]);
 
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
