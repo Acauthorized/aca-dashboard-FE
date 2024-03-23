@@ -87,8 +87,8 @@ export default function CreateCustomer() {
   };
 
 
-  let date = dayjs().format('MM/DD/YYYY');
- const time =  dayjs().format('HH:mm:ss');
+//   let date = dayjs().format('MM/DD/YYYY');
+//  const time =  dayjs().format('HH:mm:ss');
 
   const handleFormSubmit = async (values) => {
     console.log("IMAGEEEEE", values);

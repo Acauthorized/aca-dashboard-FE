@@ -101,7 +101,7 @@ export default function EditAgent({}) {
             work:data?.work || "",
             state:data?.state || "",
             date:dayjs(data?.date).format('MM/DD/YYYY') , //data?.date,
-            time:data?.time ,
+            time:dayjs(data?.time).format('HH:mm:ss') ,
             
             
           }));
