@@ -624,7 +624,7 @@ const CustomerForm = (props) => {
                   <Grid item xs={12} md={6}  mt={4}>
               
 
-<H3 mb={"6px"}>
+<H3 mb={"12px"}>
   Date of Birth
 </H3>
 
@@ -635,7 +635,7 @@ const CustomerForm = (props) => {
                   required
                   disableFuture
                   type="date"
-                  label="Date Of birth"
+                //  label="Date Of birth"
                   format="MM/dd/yyyy"
                   value={values.birthday}
                   minDate={dayjs("1900-01-01")}

@@ -271,14 +271,14 @@ export const DeleteImage = async (filename, folder) => {
 //Search Customer --> http://localhost:8000/customers/find/anemous?searchtype=name
 
 export const CustomerSerch =
-  (name, ssn, ExecuteSocket ,city ,date) => async (dispatch) => {
+  (name, ssn, ExecuteSocket ,state ,date) => async (dispatch) => {
     try {
       //await DeleteImage(filename)
 
  let firstName;
  let lastName;
 
-console.log(name ,ssn , city  )
+console.log(name ,ssn , state  )
 
 
       if(!name || !ssn ){
@@ -320,7 +320,7 @@ if(!firstName  ||  !lastName)
 
 
       const response = await axiosJWT.get(
-        `${baseUrl}/customers/find/search?fullName=${name}&&ssn=${ssn}&&city=${city}&&date=${date}`
+        `${baseUrl}/customers/find/search?fullName=${name}&&ssn=${ssn}&&state=${state}&&date=${date}`
       );
       
 

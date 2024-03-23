@@ -33,16 +33,16 @@ export default function EditAgent({}) {
     lastName: yup.string().required("required"),
 
     email: yup.string().email("invalid email").required("Email is required"),
-    address: yup.string().required("required"),
-    phoneNumber: yup.number().required("required"),
-    zip: yup.number().required("required"),
-    city: yup.string().required("required"),
-    ssn: yup.number().required("required"),
-    gender:yup.string().required("required"),
-    work: yup.string().required("required"),
-    state: yup.string().required("required"),
-    date: yup.string().required("required"),
-    time: yup.string().required("required"),
+     address: yup.string().required("required"),
+     phoneNumber: yup.number().required("required"),
+     zip: yup.number().required("required"),
+     city: yup.string().required("required"),
+     ssn: yup.number().required("required"),
+     gender:yup.string().required("required"),
+     work: yup.string().required("required"),
+     state: yup.string().required("required"),
+    //  date: yup.string().required("required"),
+    // // time: yup.string().required("required"),
 
   
   });
@@ -87,20 +87,20 @@ export default function EditAgent({}) {
           setCustomer((state) => ({
             ...state,
 
-            firstName: data?.firstName,
-            lastName: data?.lastName,
-            address: data?.address,
-            phoneNumber: data?.phoneNumber,
-            email: data?.email,
-            city:data?.city,
-            zip:data?.zip,
-            gender:data?.gender,
-            ssn:data?.ssn,
-            birthday:data?.birthday,
-            work:data?.work,
-            state:data?.state,
+            firstName: data?.firstName || "",
+            lastName: data?.lastName || "",
+            address: data?.address || "",
+            phoneNumber: data?.phoneNumber || "",
+            email: data?.email || "",
+            city:data?.city || "",
+            zip:data?.zip || "",
+            gender:data?.gender || "",
+            ssn:data?.ssn || "",
+            birthday:data?.birthday || "",
+            work:data?.work || "",
+            state:data?.state || "",
             date:dayjs(data?.date).format('MM/DD/YYYY') , //data?.date,
-            time:data?.time,
+            time:data?.time ,
             
             
           }));
@@ -148,7 +148,7 @@ export default function EditAgent({}) {
       </H3>
 
       <div>
-        {!customer?.email  && (
+        {!customer?.firstName  && (
           <div style={{ width: "100%" }} className="p-5">
             <Skeleton
               variant="rounded"
