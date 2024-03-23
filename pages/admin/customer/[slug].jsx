@@ -15,6 +15,7 @@ import {
 import Skeleton from "@mui/material/Skeleton";
 import { fetchWord } from "../../../redux/lang/fetchword";
 import dayjs from 'dayjs';
+import {toast} from 'react-toastify'
 
 // =============================================================================
 EditAgent.getLayout = function getLayout(page) {
@@ -58,7 +59,7 @@ export default function EditAgent({}) {
     city:'',
     zip:'',
     ssn:'',
-    birthday:'',
+    birthday:dayjs(),
     work:'',
     state:'',
     date:'',
@@ -96,7 +97,7 @@ export default function EditAgent({}) {
             zip:data?.zip || "",
             gender:data?.gender || "",
             ssn:data?.ssn || "",
-            birthday:data?.birthday || "",
+            birthday:data?.birthday,
             work:data?.work || "",
             state:data?.state || "",
             date:dayjs(data?.date).format('MM/DD/YYYY') , //data?.date,
@@ -131,6 +132,14 @@ export default function EditAgent({}) {
     values.userimage = userimage
     values.audio =audiofile
     console.log(values)
+
+    if (agreement === false){
+      toast.error('You must Agree to the terms to create new customer')
+      return
+    }
+
+
+
     UpdateCustomer(values, query.slug);
   };
 

@@ -339,6 +339,8 @@ const CustomerForm = (props) => {
               <Radio checked={agreement === true} color="info" size="small" />
             }
           />
+
+          
         </div>
       </Stack>
 
