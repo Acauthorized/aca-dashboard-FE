@@ -939,7 +939,7 @@ export default function CustomerList({}) {
 
       {/* -----status update modal--- */}
 
-      {userRole[0] === "admin" && customerdata?.email && (
+      {userRole[0] === "admin" && customerdata?.firstName && (
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit customer status</DialogTitle>
           <DialogContent>
