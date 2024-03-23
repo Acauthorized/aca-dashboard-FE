@@ -218,8 +218,9 @@ const CustomerForm = (props) => {
     else if (name === "true") setAgreement(true);
   };
 
-  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit ;
-  const signatureCondition = (isedit && userRole[0] === "admin") || !isedit || (isedit && !signature)
+  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit;
+  const signatureCondition =
+    (isedit && userRole[0] === "admin") || !isedit || (isedit && !signature);
   const showImagesUpload = !isedit || (isedit && images?.length === 0);
   const showUserImageUpload = !isedit || (isedit && !userimage?.link);
   const showDocImageUpload = !isedit || (isedit && !file?.link);
@@ -300,6 +301,14 @@ const CustomerForm = (props) => {
             </li>
           </ol>
         </div>
+
+
+
+<Paragraph>
+
+{fetchWord("confirm", locale)}
+</Paragraph>
+
 
         {/* ---process--- */}
         <div>
@@ -495,7 +504,6 @@ const CustomerForm = (props) => {
                 />
               </Grid>
 
-           
               <Grid item xs={12} md={6}>
                 <H3 sx={{ mb: "12px" }}>{fetchWord("state", locale)}</H3>
                 <TextField
@@ -583,8 +591,6 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-         
-
                 <div>
                   {/* <h3>Agreament </h3> */}
                   <Grid item xs={12}>
@@ -621,45 +627,33 @@ const CustomerForm = (props) => {
                     </FormControl>
                   </Grid>
 
+                  <Grid item xs={12} md={6} mt={4}>
+                    <H3 mb={"12px"}>Date of Birth</H3>
 
-                  <Grid item xs={12} md={6}  mt={4}>
-              
-
-<H3 mb={"12px"}>
-  Date of Birth
-</H3>
-
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  sx={{ width: "full", mt: "12px", marginLeft: "12px" }}
-                  required
-                  disableFuture
-                  type="date"
-                //  label="Date Of birth"
-                  format="MM/dd/yyyy"
-                  value={values.birthday}
-                  minDate={dayjs("1900-01-01")}
-                  maxDate={dayjs()}
-                  onBlur={handleBlur}
-                  onChange={(value) => {
-                    setFieldValue("birthday", Date.parse(value));
-                  }}
-                  color="info"
-                  renderInput={(params) => <TextField {...params} />}
-                  error={errors.birthday}
-                  helperText={errors.birthday}
-                />
-              </LocalizationProvider>
-            </Grid>
-
-
-
-
-
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{ width: "full", mt: "12px", marginLeft: "12px" }}
+                        required
+                        disableFuture
+                        type="date"
+                        //  label="Date Of birth"
+                        format="MM/dd/yyyy"
+                        value={values.birthday}
+                        minDate={dayjs("1900-01-01")}
+                        maxDate={dayjs()}
+                        onBlur={handleBlur}
+                        onChange={(value) => {
+                          setFieldValue("birthday", Date.parse(value));
+                        }}
+                        color="info"
+                        renderInput={(params) => <TextField {...params} />}
+                        error={errors.birthday}
+                        helperText={errors.birthday}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
                 </div>
               </Grid>
-
 
               {signature && (
                 <Grid sx={{ my: "15px" }} item xs={12} md={12}>
