@@ -520,13 +520,13 @@ export default function CustomerList({}) {
 
 
       if (userRole[0] === "admin") {
-        toast.info(`customer status changed to ${data.status} && Refetch Admin customers`);
+        toast.info(`customer status changed to ${data.status} `);
      //   toast.info("HI ADMIN some agent search for customer");
         dispatch(
           FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
         );
       } else if (userRole[0] === "staff") {
-        toast.info(`customer status changed to ${data.status} && Refetch Agent customers` );
+        toast.info(`customer status changed to ${data.status} ` );
        // toast.info("HI AGENT some agent search for customer");
         dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
@@ -644,7 +644,7 @@ export default function CustomerList({}) {
           >
             <FormControl fullWidth size="small">
               <InputLabel color="info" id="demo-simple-select-label">
-                City
+                State
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
