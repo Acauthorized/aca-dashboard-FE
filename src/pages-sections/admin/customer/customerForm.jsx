@@ -12,8 +12,7 @@ import {
   RadioGroup,
   FormHelperText,
 } from "@mui/material";
-import { makeStyles } from '@mui/styles';
-import { Paragraph ,H2 ,H3 ,H1 } from "components/Typography";
+import { Paragraph, H2, H3, H1 } from "components/Typography";
 import { Formik, Field, ErrorMessage, useFormik } from "formik";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box";
@@ -26,6 +25,13 @@ import { init } from "i18next";
 import { useSelector } from "react-redux";
 import { fetchWord } from "../../../../redux/lang/fetchword";
 import { useRouter } from "next/router";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { DateField } from "@mui/x-date-pickers/DateField";
+
+import { DatePicker } from "@mui/x-date-pickers";
 
 import {
   Box,
@@ -55,27 +61,8 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 // `;
 
 // ================================================================
-// region styles
-const useStyles = makeStyles((theme) => ({
-  customTextField: {
-    "& input::placeholder": {
-      fontSize: "20px" ,
 
-     
-    },
-
-    // "& .MuiInputLabel-root": {
-    //   fontSize: "20px",
-    //   transform: "none",
-    // },
-  }
-
-}));
 // ================================================================
-
-
-
-
 
 const CustomerForm = (props) => {
   const {
@@ -97,52 +84,33 @@ const CustomerForm = (props) => {
     file,
     setFile,
     userimage,
-    setUserImage
+    setUserImage,
   } = props;
-
-  const classes = useStyles();
   const [files, setFiles] = useState([]);
 
   const [imagepreview, setImagepreview] = useState({});
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
-  const handleChangeDropZone = async (e ,type) => {
-
-    let file = e.target.files[0]
+  const handleChangeDropZone = async (e, type) => {
+    let file = e.target.files[0];
     const formData = new FormData();
     formData.append("image", file);
 
-   const res = await UploadImage(formData)
-console.log("res image-->" , res)
-   
+    const res = await UploadImage(formData);
+    console.log("res image-->", res);
 
-if(type === 'userimage'){
+    if (type === "userimage") {
+      setUserImage(res);
+      toast.success("User image uploaded successfully");
+    } else {
+      setFile(res);
+      toast.success("Document uploaded successfully");
+    }
 
-    setUserImage(res)
-    toast.success('User image uploaded successfully')
-}
-
-
-else {
-  setFile(res)
-  toast.success('Document uploaded successfully')
-
-}
-
-
-
-
-
-
-   // setFile(res)
-   
-
-
+    // setFile(res)
   };
 
-
-
-console.log("****************",userimage)
+  console.log("****************", userimage);
   console.log("inFORMIK", initialValues);
   //single image Upload
   const imageUpload = async (e) => {
@@ -251,10 +219,12 @@ console.log("****************",userimage)
   };
 
   const buttonCondition = (isedit && userRole[0] === "admin") || !isedit;
-  const showImagesUpload = !isedit  ||( isedit && images?.length === 0);
-  const showAudioUpload = !isedit  ||( isedit && !audiofile);
+  const showImagesUpload = !isedit || (isedit && images?.length === 0);
+  const showUserImageUpload = !isedit || (isedit && !userimage?.link);
+  const showDocImageUpload = !isedit || (isedit && !file?.link);
+  const showAudioUpload = !isedit || (isedit && !audiofile);
 
-  console.log(showImagesUpload ,showAudioUpload ,images ,audiofile)
+  console.log(showImagesUpload, showAudioUpload, images, audiofile);
   const { locale } = useRouter();
 
   return (
@@ -263,15 +233,10 @@ console.log("****************",userimage)
         p: 6,
       }}
     >
-
-      
       <Stack spacing={3} mb={3}>
         <div>
-          
-            <H1 fontWeight={600}>
-              {fetchWord("agreeTitle", locale)}
-            </H1>
-         
+          <H1 fontWeight={600}>{fetchWord("agreeTitle", locale)}</H1>
+
           <h3>
             <H3 sx={{ my: "10px" }} fontWeight={600}>
               {fetchWord("agreeSub", locale)}
@@ -290,14 +255,16 @@ console.log("****************",userimage)
               </Paragraph>
             </li>
             <li>
-            <Paragraph sx={{ my: "1px" }} fontWeight={500}>
+              <Paragraph sx={{ my: "1px" }} fontWeight={500}>
                 {fetchWord("agreeThree", locale)}
               </Paragraph>
-             
             </li>
-            <li>    <Paragraph sx={{ my: "1px" }} fontWeight={500}>
+            <li>
+              {" "}
+              <Paragraph sx={{ my: "1px" }} fontWeight={500}>
                 {fetchWord("agreeFour", locale)}
-              </Paragraph></li>
+              </Paragraph>
+            </li>
           </ol>
         </div>
 
@@ -307,7 +274,6 @@ console.log("****************",userimage)
               {fetchWord("agreeTitle2", locale)}
             </Paragraph>
           </h1>
-      
 
           <ol type="1">
             <li>
@@ -321,18 +287,18 @@ console.log("****************",userimage)
               </Paragraph>
             </li>
             <li>
-            <Paragraph sx={{ my: "1px" }} fontWeight={500}>
+              <Paragraph sx={{ my: "1px" }} fontWeight={500}>
                 {fetchWord("agreeThree2", locale)}
               </Paragraph>
-             
             </li>
-            <li>    <Paragraph sx={{ my: "1px" }} fontWeight={500}>
+            <li>
+              {" "}
+              <Paragraph sx={{ my: "1px" }} fontWeight={500}>
                 {fetchWord("agreeFour2", locale)}
-              </Paragraph></li>
+              </Paragraph>
+            </li>
           </ol>
         </div>
-
-
 
         {/* ---process--- */}
         <div>
@@ -398,12 +364,12 @@ console.log("****************",userimage)
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <TextField
-                classes={{ root: classes.customTextField }}
                   fullWidth
                   name="firstName"
                   label={fetchWord("firstname", locale)}
@@ -420,7 +386,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="lastName"
                   label={fetchWord("lastname", locale)}
@@ -434,11 +399,9 @@ console.log("****************",userimage)
                   helperText={touched.lastName && errors.lastName}
                 />
               </Grid>
-              
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="email"
                   label={fetchWord("email", locale)}
@@ -455,7 +418,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="address"
                   label={fetchWord("adress", locale)}
@@ -473,7 +435,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="phoneNumber"
                   label={fetchWord("phone", locale)}
@@ -490,7 +451,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="city"
                   label={fetchWord("city", locale)}
@@ -507,7 +467,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="zip"
                   label={fetchWord("zipcode", locale)}
@@ -523,8 +482,7 @@ console.log("****************",userimage)
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <TextField
-                  classes={{ root: classes.customTextField }}
+                {/* <TextField
                   fullWidth
                   name="birthday"
                   label={fetchWord("birthday", locale)}
@@ -536,7 +494,29 @@ console.log("****************",userimage)
                   onChange={handleChange}
                   error={!!touched.birthday && !!errors.birthday}
                   helperText={touched.birthday && errors.birthday}
-                />
+                /> */}
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    sx={{ width: "full", mt: "12px", marginLeft: "12px" }}
+                    required
+                    disableFuture
+                    type="date"
+                    label="Date Of birth"
+                    format="MM/dd/yyyy"
+                    value={values.birthday}
+                    minDate={dayjs("1900-01-01")}
+                    maxDate={dayjs()}
+                    onBlur={handleBlur}
+                    onChange={(value) => {
+                      setFieldValue("birthday", Date.parse(value));
+                    }}
+                    color="info"
+                    renderInput={(params) => <TextField {...params} />}
+                    error={errors.birthday}
+                    helperText={errors.birthday}
+                  />
+                </LocalizationProvider>
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -558,7 +538,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="work"
                   label={fetchWord("work", locale)}
@@ -575,7 +554,6 @@ console.log("****************",userimage)
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="date"
                   label={fetchWord("date", locale)}
@@ -593,7 +571,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="time"
                   label={fetchWord("time", locale)}
@@ -611,7 +588,6 @@ console.log("****************",userimage)
 
               <Grid item xs={12} md={6}>
                 <TextField
-                  classes={{ root: classes.customTextField }}
                   fullWidth
                   name="ssn"
                   label="ssn"
@@ -649,26 +625,38 @@ console.log("****************",userimage)
                   </MenuItem>
                 </TextField> */}
 
-<div>
-          {/* <h3>Agreament </h3> */}
-          <Grid item xs={12} >
-                <FormControl  color="info" fullWidth>
-                  <FormLabel>{fetchWord("gender", locale)}</FormLabel>
-                  <RadioGroup  color="info" row name="gender" onChange={handleChange} value={values.gender}>
-                    <FormControlLabel  color="info" value="Male" control={<Radio />} label=  {fetchWord("male", locale)} />
-                    <FormControlLabel  color="info" value="Female" control={<Radio />}  label = {fetchWord("female", locale)} />
-                    {/* <FormControlLabel  color="info" value="Other" control={<Radio />} label="Other" /> */}
-                  </RadioGroup>
-                  <FormHelperText style={{  }}>{touched.gender && errors.gender}</FormHelperText>
-                </FormControl>
-                
-              </Grid>
-        </div>
-
-
-
-
-
+                <div>
+                  {/* <h3>Agreament </h3> */}
+                  <Grid item xs={12}>
+                    <FormControl color="info" fullWidth>
+                      <FormLabel>{fetchWord("gender", locale)}</FormLabel>
+                      <RadioGroup
+                        color="info"
+                        row
+                        name="gender"
+                        onChange={handleChange}
+                        value={values.gender}
+                      >
+                        <FormControlLabel
+                          color="info"
+                          value="Male"
+                          control={<Radio />}
+                          label={fetchWord("male", locale)}
+                        />
+                        <FormControlLabel
+                          color="info"
+                          value="Female"
+                          control={<Radio />}
+                          label={fetchWord("female", locale)}
+                        />
+                        {/* <FormControlLabel  color="info" value="Other" control={<Radio />} label="Other" /> */}
+                      </RadioGroup>
+                      <FormHelperText style={{}}>
+                        {touched.gender && errors.gender}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                </div>
               </Grid>
 
               {signature && (
@@ -720,167 +708,164 @@ console.log("****************",userimage)
 
                 // flexDirection="row" mt={2} flexWrap="wrap" gap={1}
                 >
+
+
+{showUserImageUpload && (
+ <Box mb="17" mt="17">
+ <FormControl>
+   <FormLabel htmlFor="userUpload" fontWeight={"bold"}>
+     {fetchWord("userImage", locale)}
+     <Box as="span" color="red.500">
+       *
+     </Box>
+   </FormLabel>
+   <FormLabel
+     border="2px dashed lightgrey"
+     h="110px"
+     w="100%"
+     textAlign={"center"}
+     onChange={
+       (e) => handleChangeDropZone(e, "userimage")
+       // setUserImage(e.target.files[0])
+     }
+     htmlFor="userUpload"
+   >
+     <Text mt="8" color="gray">
+       {fetchWord("uploaduser", locale)}
+     </Text>
+
+     <Field
+       as={Input}
+       type="file"
+       name="url"
+       accept={["application/*, image/*"]}
+       display="none"
+       id="userUpload"
+     />
+   </FormLabel>
+ </FormControl>
+ <ErrorMessage
+   name={"url"}
+   render={(msg) => (
+     <Box
+       fontSize={"sm"}
+       color={"red.500"}
+       mt={1}
+       textAlign={"left"}
+     >
+       {msg}
+     </Box>
+   )}
+ />
+</Box>
+)}
+
+
+{showDocImageUpload && (
+ <Box mb="17" mt="17">
+ <FormControl>
+   <FormLabel htmlFor="docUpload" fontWeight={"bold"}>
+     {fetchWord("documentImage", locale)}
+     <Box as="span" color="red.500">
+       *
+     </Box>
+   </FormLabel>
+   <FormLabel
+     border="2px dashed lightgrey"
+     h="110px"
+     w="100%"
+     textAlign={"center"}
+     onChange={
+       (e) => handleChangeDropZone(e, "doc")
+       // setUserImage(e.target.files[0])
+     }
+     htmlFor="docUpload"
+   >
+     <Text mt="8" color="gray">
+       {fetchWord("uploaddoc", locale)}
+     </Text>
+
+     <Field
+       as={Input}
+       type="file"
+       name="doc"
+       accept={["application/*, image/*"]}
+       display="none"
+       id="docUpload"
+     />
+   </FormLabel>
+ </FormControl>
+ <ErrorMessage
+   name={"doc"}
+   render={(msg) => (
+     <Box
+       fontSize={"sm"}
+       color={"red.500"}
+       mt={1}
+       textAlign={"left"}
+     >
+       {msg}
+     </Box>
+   )}
+ />
+</Box>
+)}
+
                   {showImagesUpload && (
+                    <Box>
+                      {/* ---------UserImage Upload------ */}
+                     
 
-<Box>
+                      {/* ---------Document------- */}
+                     
 
-{/* ---------UserImage Upload------ */}
-<Box mb="17" mt="17">
-                      <FormControl>
-                        <FormLabel htmlFor="userUpload" fontWeight={"bold"}>
-                          {fetchWord("userImage", locale)}
-                          <Box as="span" color="red.500">
-                            *
-                          </Box>
-                        </FormLabel>
-                        <FormLabel
-                          border="2px dashed lightgrey"
-                          h="110px"
-                          w="100%"
-                          textAlign={"center"}
-                          onChange={(e) => handleChangeDropZone(e,'userimage')
-                           // setUserImage(e.target.files[0])
-                          
-                          }
-                          htmlFor="userUpload"
-                        >
-                          <Text mt="8" color="gray">
-                            {fetchWord("uploaduser" ,locale)}
-                          </Text>
-
-                          <Field
-                            as={Input}
-                            type="file"
-                            name="url"
-                            accept={["application/*, image/*"]}
-                            display="none"
-                            id="userUpload"
-                          
-                          />
-                        </FormLabel>
-                      </FormControl>
-                      <ErrorMessage
-                        name={"url"}
-                        render={(msg) => (
-                          <Box
-                            fontSize={"sm"}
-                            color={"red.500"}
-                            mt={1}
-                            textAlign={"left"}
+                      {/* ------MultiImages------ */}
+                      <Box mb="17" mt="17">
+                        <FormControl>
+                          <FormLabel htmlFor="imageUpload" fontWeight={"bold"}>
+                            {fetchWord("images", locale)}
+                            <Box as="span" color="red.500">
+                              *
+                            </Box>
+                          </FormLabel>
+                          <FormLabel
+                            border="2px dashed lightgrey"
+                            h="110px"
+                            w="100%"
+                            textAlign={"center"}
+                            onChange={imageUpload}
+                            htmlFor="imageUpload"
                           >
-                            {msg}
-                          </Box>
-                        )}
-                      />
+                            <Text mt="8" color="gray">
+                              {fetchWord("uploadDocs", locale)}
+                            </Text>
+
+                            <Field
+                              as={Input}
+                              type="file"
+                              name="document_url"
+                              accept={["application/*, image/*"]}
+                              display="none"
+                              id="imageUpload"
+                              multiple
+                            />
+                          </FormLabel>
+                        </FormControl>
+                        <ErrorMessage
+                          name={"document_url"}
+                          render={(msg) => (
+                            <Box
+                              fontSize={"sm"}
+                              color={"red.500"}
+                              mt={1}
+                              textAlign={"left"}
+                            >
+                              {msg}
+                            </Box>
+                          )}
+                        />
+                      </Box>
                     </Box>
-
-
-
-
-{/* ---------Document------- */}
-<Box mb="17" mt="17">
-                      <FormControl>
-                        <FormLabel htmlFor="docUpload" fontWeight={"bold"}>
-                          {fetchWord("documentImage", locale)}
-                          <Box as="span" color="red.500">
-                            *
-                          </Box>
-                        </FormLabel>
-                        <FormLabel
-                          border="2px dashed lightgrey"
-                          h="110px"
-                          w="100%"
-                          textAlign={"center"}
-                          onChange={(e) => handleChangeDropZone(e,'doc')
-                           // setUserImage(e.target.files[0])
-                          
-                          }
-                          htmlFor="docUpload"
-                        >
-                          <Text mt="8" color="gray">
-                            {fetchWord("uploaddoc", locale)}
-                          </Text>
-
-                          <Field
-                            as={Input}
-                            type="file"
-                            name="doc"
-                            accept={["application/*, image/*"]}
-                            display="none"
-                            id="docUpload"
-                          
-                          />
-                        </FormLabel>
-                      </FormControl>
-                      <ErrorMessage
-                        name={"doc"}
-                        render={(msg) => (
-                          <Box
-                            fontSize={"sm"}
-                            color={"red.500"}
-                            mt={1}
-                            textAlign={"left"}
-                          >
-                            {msg}
-                          </Box>
-                        )}
-                      />
-                    </Box>
-
-
-
-
-{/* ------MultiImages------ */}
-                    <Box mb="17" mt="17">
-                      <FormControl>
-                        <FormLabel htmlFor="imageUpload" fontWeight={"bold"}>
-                          {fetchWord("images", locale)}
-                          <Box as="span" color="red.500">
-                            *
-                          </Box>
-                        </FormLabel>
-                        <FormLabel
-                          border="2px dashed lightgrey"
-                          h="110px"
-                          w="100%"
-                          textAlign={"center"}
-                          onChange={imageUpload}
-                          htmlFor="imageUpload"
-                        >
-                          <Text mt="8" color="gray">
-                            {fetchWord("uploadDocs", locale)}
-                          </Text>
-
-                          <Field
-                            as={Input}
-                            type="file"
-                            name="document_url"
-                            accept={["application/*, image/*"]}
-                            display="none"
-                            id="imageUpload"
-                            multiple
-                          />
-                        </FormLabel>
-                      </FormControl>
-                      <ErrorMessage
-                        name={"document_url"}
-                        render={(msg) => (
-                          <Box
-                            fontSize={"sm"}
-                            color={"red.500"}
-                            mt={1}
-                            textAlign={"left"}
-                          >
-                            {msg}
-                          </Box>
-                        )}
-                      />
-                    </Box>
-
-
-                    </Box>
-
-
                   )}
                 </div>
 
@@ -957,10 +942,11 @@ console.log("****************",userimage)
                   </div>
                 )}
 
-
-                <div style={{marginTop:'12px'}}>
-                  <Paragraph fontWeight={"600"} color="red"  mt='17' mb='17'>
-                  I {values?.firstName} authorize Rodney Sydnor to be my broker of record for years 2024 to 2028 with the healthcare marketplace.
+                <div style={{ marginTop: "12px" }}>
+                  <Paragraph fontWeight={"600"} color="red" mt="17" mb="17">
+                    I {values?.firstName} authorize Rodney Sydnor to be my
+                    broker of record for years 2024 to 2028 with the healthcare
+                    marketplace.
                   </Paragraph>
                 </div>
               </Grid>
@@ -990,9 +976,7 @@ console.log("****************",userimage)
                 </div>
               </Grid>
 
-
-{/* ------user and document images show in edit--- */}
-
+              {/* ------user and document images show in edit--- */}
 
               {/* show audio file--- */}
 
@@ -1008,43 +992,46 @@ console.log("****************",userimage)
 
 
               <Grid item xs={12}>
-              {isedit && <div style={{ display: "flex", gap: "12px" ,marginTop:'10px' }}>
+                {isedit && (
+                  <div
+                    style={{ display: "flex", gap: "12px", marginTop: "10px" }}
+                  >
+                    {userimage?.link && (
+                      <div>
+                        <Paragraph>{fetchWord("userImage", locale)}</Paragraph>
 
-{userimage?.link &&
-<div>
+                        <img
+                          style={{
+                            objectFit: "cover",
+                            height: "50px",
+                            width: "50px",
+                          }}
+                          src={userimage?.link}
+                          alt=""
+                        />
+                      </div>
+                    )}
 
+                    {file?.link && (
+                      <div>
+                        <Paragraph>
+                          {fetchWord("documentImage", locale)}
+                        </Paragraph>
 
-<Paragraph>{fetchWord("userImage" ,locale)}</Paragraph>
-
-<img 
-  style={{
-    objectFit: "cover",
-    height: "50px",
-    width: "50px",
-  }}
-src={userimage?.link} alt="" />
-</div>
-}
-
-{file?.link &&
-<div>
-<Paragraph>{fetchWord("documentImage" ,locale)}</Paragraph>
-
-
-  <img 
-  style={{
-    objectFit: "cover",
-    height: "50px",
-    width: "50px",
-  }}
-src={file?.link} alt="" />
-</div>
-}
-</div>
-}
-</Grid>
-
-
+                        <img
+                          style={{
+                            objectFit: "cover",
+                            height: "50px",
+                            width: "50px",
+                          }}
+                          src={file?.link}
+                          alt=""
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Grid>
 
               {buttonCondition && (
                 <Grid item xs={12}>

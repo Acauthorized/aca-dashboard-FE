@@ -11,6 +11,7 @@ import SettingsProvider from "contexts/SettingContext";
 import SnackbarProvider from "components/SnackbarProvider";
 import { ChakraProvider } from '@chakra-ui/react'
 
+
 import { useState ,useEffect } from "react";
 import nextI18NextConfig from "../next-i18next.config";
 
@@ -18,6 +19,7 @@ import { ToastContainer,toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 import { StateContextProvider } from '../redux/socket/context'
+
 
 
 
@@ -78,9 +80,12 @@ const App = ({
       <SettingsProvider>
         <AppProvider>
           <MuiTheme>
+         
             <SnackbarProvider>
               <RTL>{getLayout(<AnyComponent {...pageProps} />)}</RTL>
             </SnackbarProvider>
+
+
           </MuiTheme>
         </AppProvider>
       </SettingsProvider>

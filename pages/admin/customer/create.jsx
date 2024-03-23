@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { fetchWord } from "../../../redux/lang/fetchword";
 import {toast} from 'react-toastify'
 import { useContextApp } from "../../../redux/socket/context";
-
+import dayjs from 'dayjs';
 
 
 // =============================================================================
@@ -31,7 +31,7 @@ const INITIAL_VALUES = {
   gender: "",
   city: "",
   zip: "",
-  birthday: "",
+  birthday:  dayjs(),
   date:'',
   time:'',
  
@@ -93,6 +93,7 @@ export default function CreateCustomer() {
     values.agreement = agreement
     values.file = file
     values.userimage = userimage
+    
 
 
     if (agreement === false){

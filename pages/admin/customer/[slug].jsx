@@ -14,7 +14,7 @@ import {
 // import Skeleton from 'react-loading-skeleton';
 import Skeleton from "@mui/material/Skeleton";
 import { fetchWord } from "../../../redux/lang/fetchword";
-
+import dayjs from 'dayjs';
 
 // =============================================================================
 EditAgent.getLayout = function getLayout(page) {
@@ -127,6 +127,8 @@ export default function EditAgent({}) {
     values.signature = signature
     values.agreement = agreement
     values.files = images
+    values.file = file
+    values.userimage = userimage
     values.audio =audiofile
     console.log(values)
     UpdateCustomer(values, query.slug);

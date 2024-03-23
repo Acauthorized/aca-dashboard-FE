@@ -270,19 +270,34 @@ export const DeleteImage = async (filename, folder) => {
 //Search Customer --> http://localhost:8000/customers/find/anemous?searchtype=name
 
 export const CustomerSerch =
-  (value, type, ExecuteSocket ,status ,date) => async (dispatch) => {
+  (name, ssn, ExecuteSocket ,city ,date) => async (dispatch) => {
     try {
       //await DeleteImage(filename)
 
-      if(!value){
 
-        toast.error("You should type something to search")
+
+
+      if(!name && !ssn ){
+
+        toast.error("You should type FullName or Ssn to search")
 
 return
       }
 
+// let firstName;
+// let lastName;
+
+//       if(name){
+
+//          firstName = name.split(' ').slice(0, -1).join(' ');
+//         lastName = name.split(' ').pop()
+//       }
+      
+
+
+
       const response = await axiosJWT.get(
-        `${baseUrl}/customers/find/${value}?searchtype=${type}&&status=${status}&&date=${date}`
+        `${baseUrl}/customers/find/search?fullName=${name}&&ssn=${ssn}&&city=${city}&&date=${date}`
       );
       
 

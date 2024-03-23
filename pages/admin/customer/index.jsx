@@ -58,6 +58,12 @@ import { closeCustomerModel } from "../../../redux/customerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useContextApp } from "../../../redux/socket/context";
 import { stat } from "fs";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
+
+import { DatePicker } from "@mui/x-date-pickers";
 
 //import { connectSocket } from '../../../redux/socket/socketConnect';
 
@@ -134,7 +140,9 @@ export default function CustomerList({}) {
   const [size_list, setSizeList] = useState([1, 2, 3, 4, 5, 6, 8, 9]);
 
   //////search customer  IIIIIIII
-  const [searchValue, setSearchValue] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [ssn, setSsn] = useState("");
+  const [city, setCity] = useState("");
   const [searchType, setSearchType] = useState("name");
 
   const handleSearchTypeChange = ({ target: { name } }) => {
@@ -172,9 +180,19 @@ export default function CustomerList({}) {
   const [searchExiststatus, setSearchExistStatus] = useState("");
   const [searcDate, setSearchDate] = useState("");
 
+  //const[date, setDate] =React.useState(dayjs(data.birthday));
+
+
+
   const handleSearchExistStatusChange = (event) => {
     setSearchExistStatus(event.target.value);
     console.log("name", event.target.value);
+  };
+
+
+  const handleCityChange = (event) => {
+    setCity(event.target.value);
+    console.log("city", event.target.value);
   };
 
   const handleSearchStatusChange = (event) => {
@@ -498,15 +516,17 @@ export default function CustomerList({}) {
       console.log(
         `status 📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌${data.status}`
       );
-      toast.info(`customer status changed to ${data.status}`);
+     // toast.info(`customer status changed to ${data.status}`);
 
 
       if (userRole[0] === "admin") {
+        toast.info(`customer status changed to ${data.status} && Refetch Admin customers`);
      //   toast.info("HI ADMIN some agent search for customer");
         dispatch(
           FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
         );
       } else if (userRole[0] === "staff") {
+        toast.info(`customer status changed to ${data.status} && Refetch Agent customers` );
        // toast.info("HI AGENT some agent search for customer");
         dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
@@ -554,18 +574,57 @@ export default function CustomerList({}) {
           }}
         >
           <SearchInput
-            label={"search by name or ssn"}
+            label={"search by FULLNAME "}
             // sx={{ flexGrow: 1 }}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => setFullname(e.target.value)}
           />
 
+
+<SearchInput
+            label={"search by SSN "}
+            // sx={{ flexGrow: 1 }}
+            onChange={(e) => setSsn(e.target.value)}
+          />
+
+
+
+{/* DATE--- */}
           <Box>
-            <SearchInput
+            {/* <SearchInput
               label={"search by birth date"}
               // sx={{ flexGrow: 1 }}
               onChange={(e) => setSearchDate(e.target.value)}
-            />
+            /> */}
+ 
+ <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    sx={{
+                        display:"flex",
+                        textAlign:"center",
+                        justifyContent:"center",
+                        alignItems:"center",
+                        color:'info'
+                    }}
+                    color="info"
+                    inputFormat = 'DD/MM/YYYY'
+                   // minDate={now}
+                    label="Choose customer birth date"
+                    value={searcDate}
+                    onChange={(newValue) => {
+                        setSearchDate(newValue);
+                    }}
+                    renderInput={(params) => <TextField sx={{color:'info',alignSelf:"center",justifySelf:"center",marginTop:""}} {...params} />}
+                />
+
+
+</LocalizationProvider>
+
+
+
           </Box>
+
+
+
 
           {/* --------Status customer exist search---- */}
           <Box
@@ -579,15 +638,15 @@ export default function CustomerList({}) {
           >
             <FormControl fullWidth size="small">
               <InputLabel color="info" id="demo-simple-select-label">
-                Status
+                City
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 color="info"
-                value={searchExiststatus}
+                value={city}
                 label="FilterBy"
-                onChange={handleSearchExistStatusChange}
+                onChange={handleCityChange}
               >
                 {/* <MenuItem color="info" value="all">
                     All
@@ -595,17 +654,20 @@ export default function CustomerList({}) {
 
                 <MenuItem
                   color="info"
-                  value="accepted"
+                  value="Florida"
                   sx={{ alignItems: "center" }}
                 >
-                  Accepted
+                  Florida
                 </MenuItem>
-                <MenuItem color="info" value="pending">
-                  Pending
-                </MenuItem>
+                <MenuItem color="info" value="Newyork">
+                  Newyork
 
-                <MenuItem color="info" value="rejected">
-                  Rejected
+
+
+                                  </MenuItem>
+
+                <MenuItem color="info" value="Chicago">
+                  Chicagp
                 </MenuItem>
 
                 {/* <MenuItem color="info" value="admincustomers">
@@ -623,10 +685,10 @@ export default function CustomerList({}) {
             onClick={() =>
               dispatch(
                 CustomerSerch(
-                  searchValue,
-                  searchType,
+                  fullname,
+                  ssn,
                   ExecuteSocket,
-                  searchExiststatus,
+                  city,
                   searcDate
                 )
               )
@@ -640,7 +702,7 @@ export default function CustomerList({}) {
             Search
           </Button>
         </Box>
-
+{/* 
         <Stack spacing={3} mb={3}>
           <div>
             <FormControlLabel
@@ -677,7 +739,7 @@ export default function CustomerList({}) {
               }
             />
           </div>
-        </Stack>
+        </Stack> */}
       </Card>
 
       <div>
