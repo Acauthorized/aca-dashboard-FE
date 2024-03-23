@@ -569,7 +569,7 @@ export default function CustomerList({}) {
         <Box
           sx={{
             flexDirection: { xs: "column", md: "row" },
-            gap: "8px",
+            gap: "12px",
             display: "flex",
           }}
         >
@@ -589,7 +589,12 @@ export default function CustomerList({}) {
 
 
 {/* DATE--- */}
-          <Box>
+          <Box
+          
+
+          
+          
+          >
             {/* <SearchInput
               label={"search by birth date"}
               // sx={{ flexGrow: 1 }}
@@ -603,7 +608,8 @@ export default function CustomerList({}) {
                         textAlign:"center",
                         justifyContent:"center",
                         alignItems:"center",
-                        color:'info'
+                        color:'info',
+
                     }}
                     color="info"
                     inputFormat = 'DD/MM/YYYY'

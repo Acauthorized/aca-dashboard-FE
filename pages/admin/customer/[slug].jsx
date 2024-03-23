@@ -99,7 +99,7 @@ export default function EditAgent({}) {
             birthday:data?.birthday,
             work:data?.work,
             state:data?.state,
-            date:data?.date,
+            date:dayjs(data?.date).format('MM/DD/YYYY') , //data?.date,
             time:data?.time,
             
             

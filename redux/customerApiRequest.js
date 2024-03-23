@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { changeLanguage } from "i18next";
 
 import { APIURL } from "./baseURL";
+import { Fullscreen } from "@mui/icons-material";
 const baseUrl = APIURL;
 const REACT_APP_BASE_URL1 = "https://clownfish-app-tzjmm.ondigitalocean.app";
 const REACT_APP_BASE_URL = "http://localhost:8000";
@@ -274,18 +275,40 @@ export const CustomerSerch =
     try {
       //await DeleteImage(filename)
 
+ let firstName;
+ let lastName;
+
+console.log(name ,ssn , city  )
 
 
+      if(!name || !ssn ){
 
-      if(!name && !ssn ){
+     
+        console.log(name ,ssn )
 
         toast.error("You should type FullName or Ssn to search")
 
 return
       }
 
-// let firstName;
-// let lastName;
+      if(name){
+        
+          firstName = name.split(' ').slice(0, -1).join(' ');
+         lastName = name.split(' ').pop()
+
+         console.log(firstName,"first "  ,lastName )
+
+if(!firstName  ||  !lastName)
+{
+
+  toast.error("You should type FullName and lastName")
+  return
+}
+      }
+
+
+
+
 
 //       if(name){
 

@@ -311,7 +311,7 @@ const CustomerForm = (props) => {
             }}
             value={agreement}
             onChange={handleAgreementChange}
-            label={<H3 fontWeight={600}>False</H3>}
+            label={<H3 fontWeight={600}>No</H3>}
             control={
               <Radio checked={agreement === false} color="info" size="small" />
             }
@@ -324,7 +324,7 @@ const CustomerForm = (props) => {
             }}
             value={agreement}
             onChange={handleAgreementChange}
-            label={<H3 fontWeight={600}>True</H3>}
+            label={<H3 fontWeight={600}>Yes</H3>}
             control={
               <Radio checked={agreement === true} color="info" size="small" />
             }
@@ -367,8 +367,15 @@ const CustomerForm = (props) => {
           setFieldValue,
         }) => (
           <form onSubmit={handleSubmit}>
+            <Box mb={"22px"}>
+              <H3>Date {values?.date}</H3>
+
+              <H3>Time : {values.time}</H3>
+            </Box>
+
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("firstname", locale)}</H3>
                 <TextField
                   fullWidth
                   name="firstName"
@@ -385,6 +392,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("lastname", locale)}</H3>
                 <TextField
                   fullWidth
                   name="lastName"
@@ -401,6 +409,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("email", locale)}</H3>
                 <TextField
                   fullWidth
                   name="email"
@@ -417,6 +426,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("adress", locale)}</H3>
                 <TextField
                   fullWidth
                   name="address"
@@ -434,6 +444,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("phone", locale)}</H3>
                 <TextField
                   fullWidth
                   name="phoneNumber"
@@ -450,6 +461,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("city", locale)}</H3>
                 <TextField
                   fullWidth
                   name="city"
@@ -466,6 +478,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("zipcode", locale)}</H3>
                 <TextField
                   fullWidth
                   name="zip"
@@ -481,45 +494,9 @@ const CustomerForm = (props) => {
                 />
               </Grid>
 
+           
               <Grid item xs={12} md={6}>
-                {/* <TextField
-                  fullWidth
-                  name="birthday"
-                  label={fetchWord("birthday", locale)}
-                  color="info"
-                  size="medium"
-                  placeholder={fetchWord("birthday", locale)}
-                  value={values.birthday}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={!!touched.birthday && !!errors.birthday}
-                  helperText={touched.birthday && errors.birthday}
-                /> */}
-
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    sx={{ width: "full", mt: "12px", marginLeft: "12px" }}
-                    required
-                    disableFuture
-                    type="date"
-                    label="Date Of birth"
-                    format="MM/dd/yyyy"
-                    value={values.birthday}
-                    minDate={dayjs("1900-01-01")}
-                    maxDate={dayjs()}
-                    onBlur={handleBlur}
-                    onChange={(value) => {
-                      setFieldValue("birthday", Date.parse(value));
-                    }}
-                    color="info"
-                    renderInput={(params) => <TextField {...params} />}
-                    error={errors.birthday}
-                    helperText={errors.birthday}
-                  />
-                </LocalizationProvider>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("state", locale)}</H3>
                 <TextField
                   fullWidth
                   name="state"
@@ -537,6 +514,7 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>{fetchWord("work", locale)}</H3>
                 <TextField
                   fullWidth
                   name="work"
@@ -552,7 +530,7 @@ const CustomerForm = (props) => {
                   helperText={touched.work && errors.work}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   name="date"
@@ -584,9 +562,10 @@ const CustomerForm = (props) => {
                   error={!!touched.time && !!errors.time}
                   helperText={touched.time && errors.time}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} md={6}>
+                <H3 sx={{ mb: "12px" }}>Ssn</H3>
                 <TextField
                   fullWidth
                   name="ssn"
@@ -603,33 +582,17 @@ const CustomerForm = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-                {/* <TextField
-                  select
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  name="gender"
-                  onBlur={handleBlur}
-                  placeholder="Category"
-                  label={fetchWord("gender", locale)}
-                  onChange={handleChange}
-                  value={values.gender}
-                  error={Boolean(errors.gender && touched.gendery)}
-                  helperText={touched.gender && errors.category}
-                >
-                  <MenuItem color="info" value={"male"}>
-                    {fetchWord("male", locale)}
-                  </MenuItem>
-                  <MenuItem color="info" value={"female"}>
-                    {fetchWord("female", locale)}
-                  </MenuItem>
-                </TextField> */}
+         
 
                 <div>
                   {/* <h3>Agreament </h3> */}
                   <Grid item xs={12}>
                     <FormControl color="info" fullWidth>
-                      <FormLabel>{fetchWord("gender", locale)}</FormLabel>
+                      <FormLabel>
+                        <H3 sx={{ mb: "12px" }}>
+                          {fetchWord("gender", locale)}
+                        </H3>
+                      </FormLabel>
                       <RadioGroup
                         color="info"
                         row
@@ -656,8 +619,46 @@ const CustomerForm = (props) => {
                       </FormHelperText>
                     </FormControl>
                   </Grid>
+
+
+                  <Grid item xs={12} md={6}  mt={4}>
+              
+
+<H3 mb={"6px"}>
+  Date of Birth
+</H3>
+
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  sx={{ width: "full", mt: "12px", marginLeft: "12px" }}
+                  required
+                  disableFuture
+                  type="date"
+                  label="Date Of birth"
+                  format="MM/dd/yyyy"
+                  value={values.birthday}
+                  minDate={dayjs("1900-01-01")}
+                  maxDate={dayjs()}
+                  onBlur={handleBlur}
+                  onChange={(value) => {
+                    setFieldValue("birthday", Date.parse(value));
+                  }}
+                  color="info"
+                  renderInput={(params) => <TextField {...params} />}
+                  error={errors.birthday}
+                  helperText={errors.birthday}
+                />
+              </LocalizationProvider>
+            </Grid>
+
+
+
+
+
                 </div>
               </Grid>
+
 
               {signature && (
                 <Grid sx={{ my: "15px" }} item xs={12} md={12}>
@@ -708,116 +709,117 @@ const CustomerForm = (props) => {
 
                 // flexDirection="row" mt={2} flexWrap="wrap" gap={1}
                 >
+                  {showUserImageUpload && (
+                    <Box mb="17" mt="17">
+                      <FormControl>
+                        <FormLabel htmlFor="userUpload" fontWeight={"bold"}>
+                          <H3 sx={{ mb: "12px" }}>
+                            {fetchWord("userImage", locale)}
 
+                            <Box as="span" color="red.500">
+                              *
+                            </Box>
+                          </H3>
+                        </FormLabel>
+                        <FormLabel
+                          border="2px dashed lightgrey"
+                          h="110px"
+                          w="100%"
+                          textAlign={"center"}
+                          onChange={
+                            (e) => handleChangeDropZone(e, "userimage")
+                            // setUserImage(e.target.files[0])
+                          }
+                          htmlFor="userUpload"
+                        >
+                          <Text mt="8" color="gray">
+                            {fetchWord("uploaduser", locale)}
+                          </Text>
 
-{showUserImageUpload && (
- <Box mb="17" mt="17">
- <FormControl>
-   <FormLabel htmlFor="userUpload" fontWeight={"bold"}>
-     {fetchWord("userImage", locale)}
-     <Box as="span" color="red.500">
-       *
-     </Box>
-   </FormLabel>
-   <FormLabel
-     border="2px dashed lightgrey"
-     h="110px"
-     w="100%"
-     textAlign={"center"}
-     onChange={
-       (e) => handleChangeDropZone(e, "userimage")
-       // setUserImage(e.target.files[0])
-     }
-     htmlFor="userUpload"
-   >
-     <Text mt="8" color="gray">
-       {fetchWord("uploaduser", locale)}
-     </Text>
+                          <Field
+                            as={Input}
+                            type="file"
+                            name="url"
+                            accept={["application/*, image/*"]}
+                            display="none"
+                            id="userUpload"
+                          />
+                        </FormLabel>
+                      </FormControl>
+                      <ErrorMessage
+                        name={"url"}
+                        render={(msg) => (
+                          <Box
+                            fontSize={"sm"}
+                            color={"red.500"}
+                            mt={1}
+                            textAlign={"left"}
+                          >
+                            {msg}
+                          </Box>
+                        )}
+                      />
+                    </Box>
+                  )}
 
-     <Field
-       as={Input}
-       type="file"
-       name="url"
-       accept={["application/*, image/*"]}
-       display="none"
-       id="userUpload"
-     />
-   </FormLabel>
- </FormControl>
- <ErrorMessage
-   name={"url"}
-   render={(msg) => (
-     <Box
-       fontSize={"sm"}
-       color={"red.500"}
-       mt={1}
-       textAlign={"left"}
-     >
-       {msg}
-     </Box>
-   )}
- />
-</Box>
-)}
+                  {showDocImageUpload && (
+                    <Box mb="17" mt="17">
+                      <FormControl>
+                        <FormLabel htmlFor="docUpload" fontWeight={"bold"}>
+                          <H3 sx={{ mb: "12px" }}>
+                            {fetchWord("documentImage", locale)}
 
+                            <Box as="span" color="red.500">
+                              *
+                            </Box>
+                          </H3>
+                        </FormLabel>
+                        <FormLabel
+                          border="2px dashed lightgrey"
+                          h="110px"
+                          w="100%"
+                          textAlign={"center"}
+                          onChange={
+                            (e) => handleChangeDropZone(e, "doc")
+                            // setUserImage(e.target.files[0])
+                          }
+                          htmlFor="docUpload"
+                        >
+                          <Text mt="8" color="gray">
+                            {fetchWord("uploaddoc", locale)}
+                          </Text>
 
-{showDocImageUpload && (
- <Box mb="17" mt="17">
- <FormControl>
-   <FormLabel htmlFor="docUpload" fontWeight={"bold"}>
-     {fetchWord("documentImage", locale)}
-     <Box as="span" color="red.500">
-       *
-     </Box>
-   </FormLabel>
-   <FormLabel
-     border="2px dashed lightgrey"
-     h="110px"
-     w="100%"
-     textAlign={"center"}
-     onChange={
-       (e) => handleChangeDropZone(e, "doc")
-       // setUserImage(e.target.files[0])
-     }
-     htmlFor="docUpload"
-   >
-     <Text mt="8" color="gray">
-       {fetchWord("uploaddoc", locale)}
-     </Text>
-
-     <Field
-       as={Input}
-       type="file"
-       name="doc"
-       accept={["application/*, image/*"]}
-       display="none"
-       id="docUpload"
-     />
-   </FormLabel>
- </FormControl>
- <ErrorMessage
-   name={"doc"}
-   render={(msg) => (
-     <Box
-       fontSize={"sm"}
-       color={"red.500"}
-       mt={1}
-       textAlign={"left"}
-     >
-       {msg}
-     </Box>
-   )}
- />
-</Box>
-)}
+                          <Field
+                            as={Input}
+                            type="file"
+                            name="doc"
+                            accept={["application/*, image/*"]}
+                            display="none"
+                            id="docUpload"
+                          />
+                        </FormLabel>
+                      </FormControl>
+                      <ErrorMessage
+                        name={"doc"}
+                        render={(msg) => (
+                          <Box
+                            fontSize={"sm"}
+                            color={"red.500"}
+                            mt={1}
+                            textAlign={"left"}
+                          >
+                            {msg}
+                          </Box>
+                        )}
+                      />
+                    </Box>
+                  )}
 
                   {showImagesUpload && (
                     <Box>
                       {/* ---------UserImage Upload------ */}
-                     
 
                       {/* ---------Document------- */}
-                     
 
                       {/* ------MultiImages------ */}
                       <Box mb="17" mt="17">
@@ -944,9 +946,9 @@ const CustomerForm = (props) => {
 
                 <div style={{ marginTop: "12px" }}>
                   <Paragraph fontWeight={"600"} color="red" mt="17" mb="17">
-                    I {values?.firstName} authorize Rodney Sydnor to be my
-                    broker of record for years 2024 to 2028 with the healthcare
-                    marketplace.
+                    I {values?.firstName} {values?.lastName} authorize Rodney
+                    Sydnor to be my broker of record for years 2024 to 2028 with
+                    the healthcare marketplace.
                   </Paragraph>
                 </div>
               </Grid>
@@ -989,7 +991,6 @@ const CustomerForm = (props) => {
                   controls={true}
                 />
               </div>
-
 
               <Grid item xs={12}>
                 {isedit && (

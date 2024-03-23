@@ -31,9 +31,9 @@ const INITIAL_VALUES = {
   gender: "",
   city: "",
   zip: "",
-  birthday:  dayjs(),
-  date:'',
-  time:'',
+  birthday:dayjs(),
+  date:dayjs().format('MM/DD/YYYY'),
+  time:dayjs().format('HH:mm:ss'),
  
 };
 
@@ -76,12 +76,19 @@ export default function CreateCustomer() {
   console.log("id", agentId);
 
 
+
+
+
+
+
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
     socket.emit("create_cust", data);
   };
 
 
+  let date = dayjs().format('MM/DD/YYYY');
+ const time =  dayjs().format('HH:mm:ss');
 
   const handleFormSubmit = async (values) => {
     console.log("IMAGEEEEE", values);
@@ -113,6 +120,10 @@ export default function CreateCustomer() {
   return (
     <Box py={4}>
       <H3 mb={2}>{fetchWord("addCustomer", locale)}</H3>
+
+{/* {dayjs().format('MM/DD/YYYY')}
+{dayjs().format('HH:mm:ss')} */}
+
 
       <CustomerForm
         initialValues={INITIAL_VALUES}
