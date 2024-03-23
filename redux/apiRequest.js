@@ -22,6 +22,7 @@ export const loginUser = async (user, dispatch, navigate, setError) => {
   dispatch(loginStart());
   try {
     console.log("userData redux", user);
+    console.log(baseUrl)
     const res = await axios.post(`${baseUrl}/auth/login`, user);
     dispatch(loginSuccess(res.data));
     navigate.push("/admin/agent");
