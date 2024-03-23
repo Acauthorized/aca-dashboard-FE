@@ -218,7 +218,8 @@ const CustomerForm = (props) => {
     else if (name === "true") setAgreement(true);
   };
 
-  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit || (isedit && !signature);
+  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit ;
+  const signatureCondition = (isedit && userRole[0] === "admin") || !isedit || (isedit && !signature)
   const showImagesUpload = !isedit || (isedit && images?.length === 0);
   const showUserImageUpload = !isedit || (isedit && !userimage?.link);
   const showDocImageUpload = !isedit || (isedit && !file?.link);
@@ -333,7 +334,7 @@ const CustomerForm = (props) => {
       </Stack>
 
       <Grid item xs={12}>
-        {buttonCondition && (
+        {signatureCondition && (
           <div>
             {fetchWord("signatureAdd", locale)}
 
