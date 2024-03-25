@@ -11,6 +11,9 @@ import {
   Radio,
   RadioGroup,
   FormHelperText,
+  Select ,
+  InputLabel
+
 } from "@mui/material";
 import { Paragraph, H2, H3, H1 } from "components/Typography";
 import { Formik, Field, ErrorMessage, useFormik } from "formik";
@@ -51,6 +54,7 @@ import {
 } from "../../../../redux/customerApiRequest";
 import { toast } from "react-toastify";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import { states } from "../../../../redux/lang/Staties";
 
 // import { styled} from "@mui/material";
 
@@ -344,10 +348,17 @@ const CustomerForm = (props) => {
         </div>
       </Stack>
 
-      <Grid item xs={12}>
+      <Grid bgcolor={'info'} item xs={12}>
         {signatureCondition && (
           <div>
-            {fetchWord("signatureAdd", locale)}
+                <H3 sx={{ mb: "12px" }}>
+                {fetchWord("signatureAdd", locale)}
+
+                            <Box as="span" color="red.500">
+                              *
+                            </Box>
+                          </H3>
+           
 
             <SignatureCanvas
               ref={sigCanvas}
@@ -508,20 +519,33 @@ const CustomerForm = (props) => {
 
               <Grid item xs={12} md={6}>
                 <H3 sx={{ mb: "12px" }}>{fetchWord("state", locale)}</H3>
-                <TextField
+             
+
+        <TextField
+                  select
                   fullWidth
-                  name="state"
-                  label={fetchWord("state", locale)}
                   color="info"
                   size="medium"
-                  placeholder={fetchWord("state", locale)}
-                  // value={values.address}
-                  value={values.state}
+                  name="state"
                   onBlur={handleBlur}
+                  placeholder="State"
+                  label={fetchWord("state", locale)}
                   onChange={handleChange}
-                  error={!!touched.state && !!errors.state}
+                  value={values.state}
+                  error={Boolean(errors.state && touched.state)}
                   helperText={touched.state && errors.state}
-                />
+                >
+                   {states.map((state,index)=>{
+                  return (
+
+<MenuItem key={index} color="info" value={state}>
+{state}
+</MenuItem> 
+                  )
+
+                })}
+                </TextField> 
+
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -822,10 +846,13 @@ const CustomerForm = (props) => {
                       <Box mb="17" mt="17">
                         <FormControl>
                           <FormLabel htmlFor="imageUpload" fontWeight={"bold"}>
+                          <H3 sx={{ mb: "12px" }}>
                             {fetchWord("images", locale)}
+
                             <Box as="span" color="red.500">
                               *
                             </Box>
+                          </H3>
                           </FormLabel>
                           <FormLabel
                             border="2px dashed lightgrey"

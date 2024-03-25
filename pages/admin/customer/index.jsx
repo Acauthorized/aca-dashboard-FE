@@ -58,12 +58,13 @@ import { closeCustomerModel } from "../../../redux/customerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useContextApp } from "../../../redux/socket/context";
 import { stat } from "fs";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { DateField } from "@mui/x-date-pickers/DateField";
 
 import { DatePicker } from "@mui/x-date-pickers";
+import { states } from "../../../redux/lang/Staties";
 
 //import { connectSocket } from '../../../redux/socket/socketConnect';
 
@@ -135,6 +136,8 @@ export default function CustomerList({}) {
   const [sortBy, setSortBy] = useState("");
   const [sortDirection, setSortDirection] = useState("desc");
 
+  const [refetch , setrefetch]= useState(false)
+
   const [size, setSize] = useState(2);
 
   const [size_list, setSizeList] = useState([1, 2, 3, 4, 5, 6, 8, 9]);
@@ -182,13 +185,10 @@ export default function CustomerList({}) {
 
   //const[date, setDate] =React.useState(dayjs(data.birthday));
 
-
-
   const handleSearchExistStatusChange = (event) => {
     setSearchExistStatus(event.target.value);
     console.log("name", event.target.value);
   };
-
 
   const handleCityChange = (event) => {
     setCity(event.target.value);
@@ -287,9 +287,7 @@ export default function CustomerList({}) {
 
       //toast.success("Refetch customers again");
     }
-
-    
-  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size ,socket ]);
+  }, [custpage, refresh, searchstatus, sortBy, sortDirection, size, socket]);
 
   const tableHeading = [
     {
@@ -416,25 +414,26 @@ export default function CustomerList({}) {
   useEffect(() => {
     // console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
 
-    socket.on("connect_error", (err) => {
-      // the reason of the error, for example "xhr poll error"
-      console.log(err.message);
-      toast.info(`message ${err.message}`);
-    });
+    // socket.on("connect_error", (err) => {
+    //   // the reason of the error, for example "xhr poll error"
+    //   console.log(err.message);
+    //   toast.info(`message ${err.message}`);
+    // });
 
-    socket.on("start", (data) => {
-      console.log("socket start in server--->", data);
-      toast.info(data);
-    });
+    // socket.on("start", (data) => {
+    //   console.log("socket start in server--->", data);
+    //   toast.info(data);
+    // });
 
     socket.on("order", (data) => {
       toast.info(data);
     });
 
-    socket.on("search", (data) => {
-      console.log("socket start in server--->", data);
-      toast.info(data);
-    });
+
+    // socket.on("search", (data) => {
+    //   console.log("socket start in server--->", data);
+    //   toast.info(data);
+    // });
 
     // socket.on("order", (data) => {
     //   console.log("order--->" ,data)
@@ -468,10 +467,8 @@ export default function CustomerList({}) {
       // });
     }
 
-
-
     socket.on("search_server", (data) => {
-      toast.success(data.message);
+      //toast.success(data.message);
 
       //toast.info("some agent search for customer");
 
@@ -489,8 +486,6 @@ export default function CustomerList({}) {
       // setTimeout(function () {
       //   window.location.reload();
       // }, 5000);
-
-
     });
 
     //create_cust-execute
@@ -511,36 +506,28 @@ export default function CustomerList({}) {
     });
 
     socket.on("status", (data) => {
-      console.log("DATAAAAAAA SOCKETIO STATUS CHANGED 🖥️ 📱🖥️ 📱", data);
+    
 
-      console.log(
-        `status 📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌${data.status}`
-      );
-     // toast.info(`customer status changed to ${data.status}`);
-
+     
+      // toast.info(`customer status changed to ${data.status}`);
 
       if (userRole[0] === "admin") {
         toast.info(`customer status changed to ${data.status} `);
-     //   toast.info("HI ADMIN some agent search for customer");
+        //   toast.info("HI ADMIN some agent search for customer");
         dispatch(
           FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
         );
       } else if (userRole[0] === "staff") {
-        toast.info(`customer status changed to ${data.status} ` );
-       // toast.info("HI AGENT some agent search for customer");
+        toast.info(`customer status changed to ${data.status} `);
+        // toast.info("HI AGENT some agent search for customer");
         dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
 
       dispatch(FetchNotifications());
 
-
-
-
       // setTimeout(function () {
       //   window.location.reload();
       // }, 5000);
-
-
 
       // if (data?.receiver === userData?.id) {
       //   console.log("reciever", data.receiver, "currentUser", userData?.id);
@@ -551,7 +538,7 @@ export default function CustomerList({}) {
       //   });
       // }
     });
-  }, [socket ]);
+  }, [socket]);
 
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
@@ -568,73 +555,69 @@ export default function CustomerList({}) {
       >
         <Box
           sx={{
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: { xs: "column", lg: "row" },
             gap: "12px",
             display: "flex",
           }}
         >
+
+
+          <Box  sx={{ display:'flex' , gap:'12px'}}>
           <SearchInput
             label={"search by FULLNAME "}
             // sx={{ flexGrow: 1 }}
             onChange={(e) => setFullname(e.target.value)}
           />
 
-
-<SearchInput
+          <SearchInput
             label={"search by SSN "}
             // sx={{ flexGrow: 1 }}
             onChange={(e) => setSsn(e.target.value)}
           />
 
-
-
-{/* DATE--- */}
-          <Box
-          
-
-          
-          
-          >
-            {/* <SearchInput
-              label={"search by birth date"}
-              // sx={{ flexGrow: 1 }}
-              onChange={(e) => setSearchDate(e.target.value)}
-            /> */}
- 
- <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    sx={{
-                        display:"flex",
-                        textAlign:"center",
-                        justifyContent:"center",
-                        alignItems:"center",
-                        color:'info',
-
-                    }}
-                    color="info"
-                    inputFormat = 'DD/MM/YYYY'
-                   // minDate={now}
-                    label="Choose customer birth date"
-                    value={searcDate}
-                    onChange={(newValue) => {
-                        setSearchDate(newValue);
-                    }}
-                    renderInput={(params) => <TextField sx={{color:'info',alignSelf:"center",justifySelf:"center",marginTop:""}} {...params} />}
-                />
-
-
-</LocalizationProvider>
-
-
-
           </Box>
+        
+          <Box  sx={{ display:'flex' , gap:'12px'}}>
 
+          {/* DATE--- */}
+          <Box>
+       
 
-
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                sx={{
+                  display: "flex",
+                  textAlign: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: "info",
+                }}
+                color="info"
+                inputFormat="DD/MM/YYYY"
+                // minDate={now}
+                label="Choose customer birth date"
+                value={searcDate}
+                onChange={(newValue) => {
+                  setSearchDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      color: "info",
+                      alignSelf: "center",
+                      justifySelf: "center",
+                      marginTop: "",
+                    }}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </Box>
 
           {/* --------Status customer exist search---- */}
           <Box
-            width={"100px"}
+            width={"200px"}
             mr={"12px"}
             ml={"12px"}
             p={"0px"}
@@ -654,11 +637,23 @@ export default function CustomerList({}) {
                 label="FilterBy"
                 onChange={handleCityChange}
               >
+
+                {states.map((state,index)=>{
+                  return (
+
+<MenuItem key={index} color="info" value={state}>
+{state}
+</MenuItem> 
+ )
+
+                })}
+
+
                 {/* <MenuItem color="info" value="all">
                     All
                   </MenuItem> */}
 
-                <MenuItem
+                {/* <MenuItem
                   color="info"
                   value="Florida"
                   sx={{ alignItems: "center" }}
@@ -667,14 +662,11 @@ export default function CustomerList({}) {
                 </MenuItem>
                 <MenuItem color="info" value="Newyork">
                   Newyork
-
-
-
-                                  </MenuItem>
+                </MenuItem>
 
                 <MenuItem color="info" value="Chicago">
                   Chicagp
-                </MenuItem>
+                </MenuItem> */}
 
                 {/* <MenuItem color="info" value="admincustomers">
                     admin customer
@@ -683,6 +675,7 @@ export default function CustomerList({}) {
             </FormControl>
           </Box>
 
+</Box>
           <Button
             color="info"
             fullWidth={downSM}
@@ -690,13 +683,7 @@ export default function CustomerList({}) {
             // startIcon={<Add />}
             onClick={() =>
               dispatch(
-                CustomerSerch(
-                  fullname,
-                  ssn,
-                  ExecuteSocket,
-                  city,
-                  searcDate
-                )
+                CustomerSerch(fullname, ssn, ExecuteSocket, city, searcDate)
               )
             }
             sx={
@@ -708,7 +695,7 @@ export default function CustomerList({}) {
             Search
           </Button>
         </Box>
-{/* 
+        {/* 
         <Stack spacing={3} mb={3}>
           <div>
             <FormControlLabel
@@ -1063,11 +1050,3 @@ export default function CustomerList({}) {
     </Box>
   );
 }
-// export const getStaticProps = async () => {
-//   const brands = await api.brands();
-//   return {
-//     props: {
-//       brands,
-//     },
-//   };
-// };
