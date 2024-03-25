@@ -3,7 +3,7 @@ export const en = {
   editCustomer:"Edit customer",
     firstname:"First Name",
     lastname: "Last Name",
-    adress:"Adress",
+    adress:"Address",
     city:"City",
     zipcode:"Zipcode",
     state:"State",
