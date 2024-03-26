@@ -88,6 +88,8 @@ const CustomerForm = (props) => {
     setFile,
     userimage,
     setUserImage,
+    setStatus ,
+    status ='accepted'
   } = props;
   const [files, setFiles] = useState([]);
 
@@ -221,13 +223,16 @@ const CustomerForm = (props) => {
     else if (name === "true") setAgreement(true);
   };
 
-  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit;
+  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit  || (isedit && status === "accepted") ;
   const signatureCondition =
-    (isedit && userRole[0] === "admin") || !isedit || (isedit && userRole[0] === "admin" && !signature);
-  const showImagesUpload = !isedit || (isedit && userRole[0] === "admin"  && images?.length === 0) ;
-  const showUserImageUpload = !isedit || (isedit && userRole[0] === "admin" && !userimage?.link);
-  const showDocImageUpload = !isedit || (isedit && userRole[0] === "admin" && !file?.link);
-  const showAudioUpload = !isedit || (isedit && userRole[0] === "admin" && !audiofile);
+    (isedit && userRole[0] === "admin") || !isedit
+    || (isedit && status === "accepted")
+    // || (isedit && userRole[0] === "admin" && !signature) 
+  //  || (isedit && status === "accepted" && !signature);
+  const showImagesUpload = !isedit || (isedit && userRole[0] === "admin"  && images?.length === 0) || (isedit && status === "accepted" && images?.length === 0);
+  const showUserImageUpload = !isedit || (isedit && userRole[0] === "admin" && !userimage?.link) || (isedit && status === "accepted" && !userimage?.link);
+  const showDocImageUpload = !isedit || (isedit && userRole[0] === "admin" && !file?.link) || (isedit && status === "accepted" && !file?.link);
+  const showAudioUpload = !isedit || (isedit && userRole[0] === "admin" && !audiofile) || (isedit && status === "accepted" && !audiofile);
 
   console.log(showImagesUpload, showAudioUpload, images, audiofile);
   const { locale } = useRouter();

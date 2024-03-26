@@ -2158,3 +2158,13 @@ export default function CustomerList({}) {
 
 
 
+
+----------
+
+  const buttonCondition = (isedit && userRole[0] === "admin") || !isedit;
+  const signatureCondition =
+    (isedit && userRole[0] === "admin") || !isedit || (isedit && userRole[0] === "admin" && !signature);
+  const showImagesUpload = !isedit || (isedit && userRole[0] === "admin"  && images?.length === 0) ;
+  const showUserImageUpload = !isedit || (isedit && userRole[0] === "admin" && !userimage?.link);
+  const showDocImageUpload = !isedit || (isedit && userRole[0] === "admin" && !file?.link);
+  const showAudioUpload = !isedit || (isedit && userRole[0] === "admin" && !audiofile);

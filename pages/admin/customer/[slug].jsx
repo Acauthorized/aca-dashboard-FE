@@ -73,7 +73,7 @@ export default function EditAgent({}) {
   const [signature ,setSignature] = useState('')
   const [agreement  ,setAgreement] = useState(false)
   const [userimage, setUserImage] = useState(null);
-  
+  const [status, setStatus] = useState(false);
   const [file, setFile] = useState(null);
 
 
@@ -112,6 +112,7 @@ export default function EditAgent({}) {
           setAgreement(data?.agreement)
           setUserImage(data?.userimage)
           setFile(data?.file)
+          setStatus(data?.status)
 
 
         })
@@ -221,6 +222,9 @@ export default function EditAgent({}) {
         setFile={setFile}
         userimage={userimage}
         setUserImage={setUserImage}
+
+        status={status}
+        setStatus ={setStatus}
           />
         )}
         
