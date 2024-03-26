@@ -11,9 +11,8 @@ import {
   Radio,
   RadioGroup,
   FormHelperText,
-  Select ,
-  InputLabel
-
+  Select,
+  InputLabel,
 } from "@mui/material";
 import { Paragraph, H2, H3, H1 } from "components/Typography";
 import { Formik, Field, ErrorMessage, useFormik } from "formik";
@@ -224,11 +223,11 @@ const CustomerForm = (props) => {
 
   const buttonCondition = (isedit && userRole[0] === "admin") || !isedit;
   const signatureCondition =
-    (isedit && userRole[0] === "admin") || !isedit || (isedit && !signature);
-  const showImagesUpload = !isedit || (isedit && images?.length === 0);
-  const showUserImageUpload = !isedit || (isedit && !userimage?.link);
-  const showDocImageUpload = !isedit || (isedit && !file?.link);
-  const showAudioUpload = !isedit || (isedit && !audiofile);
+    (isedit && userRole[0] === "admin") || !isedit || (isedit && userRole[0] === "admin" && !signature);
+  const showImagesUpload = !isedit || (isedit && userRole[0] === "admin"  && images?.length === 0) ;
+  const showUserImageUpload = !isedit || (isedit && userRole[0] === "admin" && !userimage?.link);
+  const showDocImageUpload = !isedit || (isedit && userRole[0] === "admin" && !file?.link);
+  const showAudioUpload = !isedit || (isedit && userRole[0] === "admin" && !audiofile);
 
   console.log(showImagesUpload, showAudioUpload, images, audiofile);
   const { locale } = useRouter();
@@ -306,13 +305,7 @@ const CustomerForm = (props) => {
           </ol>
         </div>
 
-
-
-<Paragraph>
-
-{fetchWord("confirm", locale)}
-</Paragraph>
-
+        <Paragraph>{fetchWord("confirm", locale)}</Paragraph>
 
         {/* ---process--- */}
         <div>
@@ -343,22 +336,19 @@ const CustomerForm = (props) => {
               <Radio checked={agreement === true} color="info" size="small" />
             }
           />
-
-          
         </div>
       </Stack>
 
-      <Grid bgcolor={'info'} item xs={12}>
+      <Grid bgcolor={"info"} item xs={12}>
         {signatureCondition && (
           <div>
-                <H3 sx={{ mb: "12px" }}>
-                {fetchWord("signatureAdd", locale)}
+            <H3 sx={{ mb: "12px" }}>
+              {fetchWord("signatureAdd", locale)}
 
-                            <Box as="span" color="red.500">
-                              *
-                            </Box>
-                          </H3>
-           
+              <Box as="span" color="red.500">
+                *
+              </Box>
+            </H3>
 
             <SignatureCanvas
               ref={sigCanvas}
@@ -519,9 +509,8 @@ const CustomerForm = (props) => {
 
               <Grid item xs={12} md={6}>
                 <H3 sx={{ mb: "12px" }}>{fetchWord("state", locale)}</H3>
-             
 
-        <TextField
+                <TextField
                   select
                   fullWidth
                   color="info"
@@ -535,17 +524,14 @@ const CustomerForm = (props) => {
                   error={Boolean(errors.state && touched.state)}
                   helperText={touched.state && errors.state}
                 >
-                   {states.map((state,index)=>{
-                  return (
-
-<MenuItem key={index} color="info" value={state}>
-{state}
-</MenuItem> 
-                  )
-
-                })}
-                </TextField> 
-
+                  {states.map((state, index) => {
+                    return (
+                      <MenuItem key={index} color="info" value={state}>
+                        {state}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -846,13 +832,13 @@ const CustomerForm = (props) => {
                       <Box mb="17" mt="17">
                         <FormControl>
                           <FormLabel htmlFor="imageUpload" fontWeight={"bold"}>
-                          <H3 sx={{ mb: "12px" }}>
-                            {fetchWord("images", locale)}
+                            <H3 sx={{ mb: "12px" }}>
+                              {fetchWord("images", locale)}
 
-                            <Box as="span" color="red.500">
-                              *
-                            </Box>
-                          </H3>
+                              <Box as="span" color="red.500">
+                                *
+                              </Box>
+                            </H3>
                           </FormLabel>
                           <FormLabel
                             border="2px dashed lightgrey"

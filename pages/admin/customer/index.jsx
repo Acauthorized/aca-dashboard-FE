@@ -415,16 +415,16 @@ export default function CustomerList({}) {
   useEffect(() => {
     // console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
 
-    socket.on("connect_error", (err) => {
-      // the reason of the error, for example "xhr poll error"
-      console.log(err.message);
-      toast.info(`message ${err.message}`);
-    });
+    // socket.on("connect_error", (err) => {
+    //   // the reason of the error, for example "xhr poll error"
+    //   console.log(err.message);
+    //   toast.info(`message ${err.message}`);
+    // });
 
-    socket.on("start", (data) => {
-      console.log("socket start in server--->", data);
-      toast.info(data);
-    });
+    // socket.on("start", (data) => {
+    //   console.log("socket start in server--->", data);
+    //   toast.info(data);
+    // });
 
     socket.on("order", (data) => {
       toast.info(data);
@@ -470,7 +470,7 @@ export default function CustomerList({}) {
 
 
     socket.on("search_server", (data) => {
-      toast.success(data.message);
+     // toast.success(data.message);
 
       //toast.info("some agent search for customer");
 
