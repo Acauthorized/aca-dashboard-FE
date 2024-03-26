@@ -411,29 +411,29 @@ export default function CustomerList({}) {
     setcustPage(value);
   };
 
+
   useEffect(() => {
     // console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
 
-    // socket.on("connect_error", (err) => {
-    //   // the reason of the error, for example "xhr poll error"
-    //   console.log(err.message);
-    //   toast.info(`message ${err.message}`);
-    // });
+    socket.on("connect_error", (err) => {
+      // the reason of the error, for example "xhr poll error"
+      console.log(err.message);
+      toast.info(`message ${err.message}`);
+    });
 
-    // socket.on("start", (data) => {
-    //   console.log("socket start in server--->", data);
-    //   toast.info(data);
-    // });
+    socket.on("start", (data) => {
+      console.log("socket start in server--->", data);
+      toast.info(data);
+    });
 
     socket.on("order", (data) => {
       toast.info(data);
     });
 
-
-    // socket.on("search", (data) => {
-    //   console.log("socket start in server--->", data);
-    //   toast.info(data);
-    // });
+    socket.on("search", (data) => {
+      console.log("socket start in server--->", data);
+      toast.info(data);
+    });
 
     // socket.on("order", (data) => {
     //   console.log("order--->" ,data)
@@ -467,8 +467,10 @@ export default function CustomerList({}) {
       // });
     }
 
+
+
     socket.on("search_server", (data) => {
-      //toast.success(data.message);
+      toast.success(data.message);
 
       //toast.info("some agent search for customer");
 
@@ -486,6 +488,8 @@ export default function CustomerList({}) {
       // setTimeout(function () {
       //   window.location.reload();
       // }, 5000);
+
+
     });
 
     //create_cust-execute
@@ -506,28 +510,36 @@ export default function CustomerList({}) {
     });
 
     socket.on("status", (data) => {
-    
+      console.log("DATAAAAAAA SOCKETIO STATUS CHANGED 🖥️ 📱🖥️ 📱", data);
 
-     
-      // toast.info(`customer status changed to ${data.status}`);
+      console.log(
+        `status 📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌📌${data.status}`
+      );
+     // toast.info(`customer status changed to ${data.status}`);
+
 
       if (userRole[0] === "admin") {
         toast.info(`customer status changed to ${data.status} `);
-        //   toast.info("HI ADMIN some agent search for customer");
+     //   toast.info("HI ADMIN some agent search for customer");
         dispatch(
           FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
         );
       } else if (userRole[0] === "staff") {
-        toast.info(`customer status changed to ${data.status} `);
-        // toast.info("HI AGENT some agent search for customer");
+        toast.info(`customer status changed to ${data.status} ` );
+       // toast.info("HI AGENT some agent search for customer");
         dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
       }
 
       dispatch(FetchNotifications());
 
+
+
+
       // setTimeout(function () {
       //   window.location.reload();
       // }, 5000);
+
+
 
       // if (data?.receiver === userData?.id) {
       //   console.log("reciever", data.receiver, "currentUser", userData?.id);
@@ -538,7 +550,144 @@ export default function CustomerList({}) {
       //   });
       // }
     });
-  }, [socket]);
+  }, [socket ]);
+
+
+
+
+
+
+  // useEffect(() => {
+  //   // console.log("UNDER SOCKEEEEEEEEEEEEEEEEEEEEEEEET");
+
+  //   // socket.on("connect_error", (err) => {
+  //   //   // the reason of the error, for example "xhr poll error"
+  //   //   console.log(err.message);
+  //   //   toast.info(`message ${err.message}`);
+  //   // });
+
+  //   // socket.on("start", (data) => {
+  //   //   console.log("socket start in server--->", data);
+  //   //   toast.info(data);
+  //   // });
+
+  //   socket.on("order", (data) => {
+  //     toast.info(data);
+  //   });
+
+
+  //   // socket.on("search", (data) => {
+  //   //   console.log("socket start in server--->", data);
+  //   //   toast.info(data);
+  //   // });
+
+  //   // socket.on("order", (data) => {
+  //   //   console.log("order--->" ,data)
+  //   //   toast.info(data);
+  //   // });
+
+  //   if (userRole[0] === "admin") {
+  //     socket.on("createcustomer", (data) => {
+  //       toast.info("new Customer CREATED");
+  //       dispatch(
+  //         FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+  //       );
+  //       dispatch(FetchNotifications());
+  //     });
+
+  //     // search notification only show form admin
+  //     // socket.on("search_cust", (data) => {
+  //     //   //toast.info("some agent search for customer");
+
+  //     //   if (userRole[0] === "admin") {
+  //     //     toast.info("HI ADMIN some agent search for customer");
+  //     //     dispatch(
+  //     //       FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+  //     //     );
+  //     //   } else if (userRole[0] === "staff") {
+  //     //     toast.info("HI AGENT some agent search for customer");
+  //     //     dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
+  //     //   }
+
+  //     //   dispatch(FetchNotifications());
+  //     // });
+  //   }
+
+  //   socket.on("search_server", (data) => {
+  //     //toast.success(data.message);
+
+  //     //toast.info("some agent search for customer");
+
+  //     if (userRole[0] === "admin") {
+  //       toast.info("HI ADMIN some agent search for customer");
+  //       dispatch(
+  //         FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+  //       );
+  //     } else if (userRole[0] === "staff") {
+  //       toast.info("HI AGENT some agent search for customer");
+  //       dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
+  //     }
+
+  //     dispatch(FetchNotifications());
+  //     // setTimeout(function () {
+  //     //   window.location.reload();
+  //     // }, 5000);
+  //   });
+
+  //   //create_cust-execute
+
+  //   socket.on("create_cust-execute", (data) => {
+  //     //toast.success(data.message);
+
+  //     //toast.info("some agent search for customer");
+
+  //     if (userRole[0] === "admin") {
+  //       toast.info("HI ADMIN some agent added for customer");
+  //       dispatch(
+  //         FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+  //       );
+  //     }
+
+  //     dispatch(FetchNotifications());
+  //   });
+
+  //   socket.on("status", (data) => {
+    
+
+     
+  //     // toast.info(`customer status changed to ${data.status}`);
+
+  //     if (userRole[0] === "admin") {
+  //       toast.info(`customer status changed to ${data.status} `);
+  //       //   toast.info("HI ADMIN some agent search for customer");
+  //       dispatch(
+  //         FetchCustomers(custpage, size, searchstatus, sortBy, sortDirection)
+  //       );
+  //     } else if (userRole[0] === "staff") {
+  //       toast.info(`customer status changed to ${data.status} `);
+  //       // toast.info("HI AGENT some agent search for customer");
+  //       dispatch(FetchAgentCustomers(custpage, size, sortBy, sortDirection));
+  //     }
+
+  //     dispatch(FetchNotifications());
+
+  //     // setTimeout(function () {
+  //     //   window.location.reload();
+  //     // }, 5000);
+
+  //     // if (data?.receiver === userData?.id) {
+  //     //   console.log("reciever", data.receiver, "currentUser", userData?.id);
+  //     //   console.log("Customer Status changed📌📌📌📌📌📌📌📌📌📌", data);
+  //     //   toast.info("customer status changed");
+  //     //   dispatch(FetchNotifications()).then(() => {
+  //     //     window.location.reload();
+  //     //   });
+  //     // }
+  //   });
+  // }, [socket]);
+
+
+
 
   const ExecuteSocket = (data) => {
     console.log("HHIUHHIAHSH", data);
